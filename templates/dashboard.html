@@ -1,0 +1,196 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-4">
+
+    <!-- HEADER -->
+    <div class="text-center mb-4">
+        <h2>📊 Dashboard</h2>
+        <p id="datetime" class="text-muted"></p>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div class="row text-center mb-4 g-3">
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Total Teachers</h6>
+                <h3>{{ total_teachers }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Absentees Today</h6>
+                <h3>{{ absentees_count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Substitutions</h6>
+                <h3>{{ substitutions_count }}</h3>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Total Classes</h6>
+                <h3>{{ total_classes }}</h3>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- CURRENT PERIOD -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>⏱ Current Period</h4>
+
+        {% if current_period_obj %}
+        <p><strong>Period:</strong> {{ current_period_obj.name }}</p>
+        <p>
+            <strong>Time:</strong>
+            {{ current_period_obj.start_time.strftime('%H:%M') }} -
+            {{ current_period_obj.end_time.strftime('%H:%M') }}
+        </p>
+
+        <p><strong>Time Remaining:</strong> <span id="countdown"></span></p>
+
+        {% else %}
+        <p class="text-danger">❌ No period right now</p>
+        {% endif %}
+    </div>
+
+    <!-- CURRENT CLASSES -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>📚 Classes Running Now</h4>
+
+        {% if current_classes %}
+        <div class="table-responsive">
+            <table class="table table-bordered mt-3 align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Class</th>
+                        <th>Subject</th>
+                        <th>Teacher</th>
+                        <th>Status</th>
+                        <th>Absent Teacher</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for c in current_classes %}
+                    <tr>
+                        <td>{{ c.class_name }}</td>
+                        <td>{{ c.subject }}</td>
+                        <td>{{ c.teacher }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if c.status == 'Normal' %}bg-success
+                                {% elif c.status == 'Substituted' %}bg-warning
+                                {% else %}bg-danger
+                                {% endif %}
+                            ">
+                                {{ c.status }}
+                            </span>
+                        </td>
+                        <td>{{ c.absent_teacher or '-' }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-muted">No classes in this period</p>
+        {% endif %}
+    </div>
+
+    <!-- WORKLOAD + FAIRNESS -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>⚖ Workload Fairness</h4>
+
+        <div class="mb-3">
+            <h5>
+                Fairness Score:
+                <span class="badge bg-primary">{{ fairness_score }}%</span>
+            </h5>
+            <small class="text-muted">
+                Higher score means more balanced workload among teachers
+            </small>
+        </div>
+
+        <canvas id="teacherChart"></canvas>
+    </div>
+
+</div>
+
+<!-- CHART.JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+    // ---------------- CLOCK ----------------
+    function updateDateTime() {
+        const now = new Date();
+        document.getElementById("datetime").innerText = now.toLocaleString();
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
+
+
+    // ---------------- COUNTDOWN ----------------
+    let endTime = "{{ current_period_obj.end_time.strftime('%H:%M') if current_period_obj else '' }}";
+
+    if (endTime) {
+        let end = new Date();
+        let [hours, minutes] = endTime.split(":");
+        end.setHours(parseInt(hours), parseInt(minutes), 0);
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = end - now;
+
+            if (distance <= 0) {
+                document.getElementById("countdown").innerText = "Period ended";
+                return;
+            }
+
+            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const secs = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("countdown").innerText = mins + "m " + secs + "s";
+        }
+
+        setInterval(updateCountdown, 1000);
+    }
+
+
+    // ---------------- WORKLOAD CHART ----------------
+    const labels = {{ teacher_labels | tojson }};
+    const values = {{ teacher_values | tojson }};
+
+    new Chart(document.getElementById("teacherChart"), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Total Workload (Including Substitutions)',
+                data: values
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+
+{% endblock %}

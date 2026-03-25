@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<div class="container mt-5">
+
+    <h3 class="mb-4">Today's Absent Teachers</h3>
+
+    <!-- Assign Button -->
+    <form action="{{ url_for('assign_substitute') }}" method="get" onsubmit="return handleAssign()">
+        <button id="assignBtn" class="btn btn-success">
+            🚀 Assign All Substitutes
+        </button>
+    </form>
+
+    <!-- Loader -->
+    <div id="loader" class="text-center my-4" style="display:none;">
+        <div class="spinner-border text-success" role="status"></div>
+        <p class="mt-2">Assigning substitutes... ⏳</p>
+    </div>
+
+    <!-- Absent Teachers -->
+    <div class="row mt-4">
+        {% if absentees %}
+        {% for absence in absentees %}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow-sm p-3">
+                <h5>{{ absence.teacher.name }}</h5>
+                <p class="text-danger fw-bold">❌ Absent Today</p>
+            </div>
+        </div>
+        {% endfor %}
+        {% else %}
+        <p class="text-muted">No absent teachers today ✅</p>
+        {% endif %}
+    </div>
+
+    <!-- Substitution Results -->
+    {% if results %}
+    <hr>
+    <h3 class="mt-4">📊 Substitution Results</h3>
+
+    <div class="row mt-3">
+        {% for result in results %}
+        <div class="col-md-4 mb-3">
+            <div class="card shadow p-3">
+                <h5>Period {{ result.period }}</h5>
+
+                <p><strong>Class:</strong> {{ result.class_name }}</p>
+                <p><strong>Absent Teacher:</strong> {{ result.absent_teacher }}</p>
+                <p><strong>Substitute Teacher:</strong> {{ result.substitute_teacher }}</p>
+                <p><strong>Date:</strong> {{ result.date }}</p>
+
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+
+<script>
+    function handleAssign() {
+        // Show loader
+        document.getElementById("loader").style.display = "block";
+
+        // Disable button to prevent double click
+        document.getElementById("assignBtn").disabled = true;
+
+        return true; // allow form submission
+    }
+</script>
+
+{% endblock %}

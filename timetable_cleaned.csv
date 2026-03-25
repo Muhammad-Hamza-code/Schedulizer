@@ -1,0 +1,651 @@
+Period Number,Teacher,Subject,Day,Class Name
+1,Sir Bakir Shah,,Monday,10A
+1,Sir Shafique Ahmed,,Monday,10B
+1,Sir Irshad Qureshi,,Monday,10C
+1,Sir Asif Nawaz,,Monday,9A
+1,Sir Muhammad Taha,,Monday,9B
+1,Sir Iqbal Ahmed,,Monday,9C
+1,Sir Amir Shaikh Senior,,Monday,8A
+1,Sir Amir Shaikh Junior,,Monday,8B
+1,Miss Remelia Nausher,,Monday,8C
+1,Sir Abdul Sami,,Monday,7A
+1,Miss Anum Hussain,,Monday,7B
+1,Sir Abdul Hameed,,Monday,7C
+1,Sir Jamalullah,,Monday,6A
+1,Sir Faiz Hussain,,Monday,6B
+1,Sir Usama,,Monday,6C
+1,Sir Bakir Shah,,Tuesday,10A
+1,Sir Shafique Ahmed,,Tuesday,10B
+1,Sir Irshad Qureshi,,Tuesday,10C
+1,Sir Asif Nawaz,,Tuesday,9A
+1,Sir Muhammad Taha,,Tuesday,9B
+1,Sir Iqbal Ahmed,,Tuesday,9C
+1,Sir Amir Shaikh Senior,,Tuesday,8A
+1,Sir Amir Shaikh Junior,,Tuesday,8B
+1,Miss Remelia Nausher,,Tuesday,8C
+1,Sir Abdul Sami,,Tuesday,7A
+1,Miss Anum Hussain,,Tuesday,7B
+1,Sir Abdul Hameed,,Tuesday,7C
+1,Sir Jamalullah,,Tuesday,6A
+1,Sir Faiz Hussain,,Tuesday,6B
+1,Sir Usama,,Tuesday,6C
+1,Sir Bakir Shah,,Wednesday,10A
+1,Sir Shafique Ahmed,,Wednesday,10B
+1,Sir Irshad Qureshi,,Wednesday,10C
+1,Sir Asif Nawaz,,Wednesday,9A
+1,Sir Muhammad Taha,,Wednesday,9B
+1,Sir Iqbal Ahmed,,Wednesday,9C
+1,Sir Amir Shaikh Senior,,Wednesday,8A
+1,Sir Amir Shaikh Junior,,Wednesday,8B
+1,Miss Remelia Nausher,,Wednesday,8C
+1,Sir Abdul Sami,,Wednesday,7A
+1,Miss Anum Hussain,,Wednesday,7B
+1,Sir Abdul Hameed,,Wednesday,7C
+1,Sir Jamalullah,,Wednesday,6A
+1,Sir Faiz Hussain,,Wednesday,6B
+1,Sir Usama,,Wednesday,6C
+1,Sir Bakir Shah,,Thursday,10A
+1,Sir Shafique Ahmed,,Thursday,10B
+1,Sir Irshad Qureshi,,Thursday,10C
+1,Sir Asif Nawaz,,Thursday,9A
+1,Sir Muhammad Taha,,Thursday,9B
+1,Sir Iqbal Ahmed,,Thursday,9C
+1,Sir Amir Shaikh Senior,,Thursday,8A
+1,Sir Amir Shaikh Junior,,Thursday,8B
+1,Miss Remelia Nausher,,Thursday,8C
+1,Sir Abdul Sami,,Thursday,7A
+1,Miss Anum Hussain,,Thursday,7B
+1,Sir Abdul Hameed,,Thursday,7C
+1,Sir Jamalullah,,Thursday,6A
+1,Sir Faiz Hussain,,Thursday,6B
+1,Sir Usama,,Thursday,6C
+1,Sir Bakir Shah,,Friday,10A
+1,Sir Shafique Ahmed,,Friday,10B
+1,Sir Irshad Qureshi,,Friday,10C
+1,Sir Asif Nawaz,,Friday,9A
+1,Sir Muhammad Taha,,Friday,9B
+1,Sir Iqbal Ahmed,,Friday,9C
+1,Sir Amir Shaikh Senior,,Friday,8A
+1,Sir Amir Shaikh Junior,,Friday,8B
+1,Miss Remelia Nausher,,Friday,8C
+1,Sir Abdul Sami,,Friday,7A
+1,Miss Anum Hussain,,Friday,7B
+1,Sir Abdul Hameed,,Friday,7C
+1,Sir Jamalullah,,Friday,6A
+1,Sir Faiz Hussain,,Friday,6B
+1,Sir Usama,,Friday,6C
+1,Sir Bakir Shah,,Saturday,10A
+1,Sir Shafique Ahmed,,Saturday,10B
+1,Sir Irshad Qureshi,,Saturday,10C
+1,Sir Asif Nawaz,,Saturday,9A
+1,Sir Muhammad Taha,,Saturday,9B
+1,Sir Iqbal Ahmed,,Saturday,9C
+1,Sir Amir Shaikh Senior,,Saturday,8A
+1,Sir Amir Shaikh Junior,,Saturday,8B
+1,Miss Remelia Nausher,,Saturday,8C
+1,Sir Abdul Sami,,Saturday,7A
+1,Miss Anum Hussain,,Saturday,7B
+1,Sir Abdul Hameed,,Saturday,7C
+1,Sir Jamalullah,,Saturday,6A
+1,Sir Faiz Hussain,,Saturday,6B
+1,Sir Usama,,Saturday,6C
+2,Sir Bakir Shah,,Monday,10A
+2,Sir Shafique Ahmed,,Monday,10B
+2,Sir Irshad Qureshi,,Monday,10C
+2,Sir Asif Nawaz,,Monday,9A
+2,Sir Muhammad Taha,,Monday,9B
+2,Sir Iqbal Ahmed,,Monday,9C
+2,Sir Amir Shaikh Senior,,Monday,8A
+2,Sir Amir Shaikh Junior,,Monday,8B
+2,Miss Remelia Nausher,,Monday,8C
+2,Sir Abdul Sami,,Monday,7A
+2,Miss Anum Hussain,,Monday,7B
+2,Sir Abdul Hameed,,Monday,7C
+2,Sir Jamalullah,,Monday,6A
+2,Sir Faiz Hussain,,Monday,6B
+2,Sir Usama,,Monday,6C
+2,Sir Bakir Shah,,Tuesday,10A
+2,Sir Shafique Ahmed,,Tuesday,10B
+2,Sir Irshad Qureshi,,Tuesday,10C
+2,Sir Asif Nawaz,,Tuesday,9A
+2,Sir Muhammad Taha,,Tuesday,9B
+2,Sir Iqbal Ahmed,,Tuesday,9C
+2,Sir Amir Shaikh Senior,,Tuesday,8A
+2,Sir Amir Shaikh Junior,,Tuesday,8B
+2,Miss Remelia Nausher,,Tuesday,8C
+2,Sir Abdul Sami,,Tuesday,7A
+2,Miss Anum Hussain,,Tuesday,7B
+2,Sir Abdul Hameed,,Tuesday,7C
+2,Sir Jamalullah,,Tuesday,6A
+2,Sir Faiz Hussain,,Tuesday,6B
+2,Sir Usama,,Tuesday,6C
+2,Sir Bakir Shah,,Wednesday,10A
+2,Sir Shafique Ahmed,,Wednesday,10B
+2,Sir Irshad Qureshi,,Wednesday,10C
+2,Sir Asif Nawaz,,Wednesday,9A
+2,Sir Muhammad Taha,,Wednesday,9B
+2,Sir Iqbal Ahmed,,Wednesday,9C
+2,Sir Amir Shaikh Senior,,Wednesday,8A
+2,Sir Amir Shaikh Junior,,Wednesday,8B
+2,Miss Remelia Nausher,,Wednesday,8C
+2,Sir Abdul Sami,,Wednesday,7A
+2,Miss Anum Hussain,,Wednesday,7B
+2,Sir Abdul Hameed,,Wednesday,7C
+2,Sir Jamalullah,,Wednesday,6A
+2,Sir Faiz Hussain,,Wednesday,6B
+2,Sir Usama,,Wednesday,6C
+2,Sir Bakir Shah,,Thursday,10A
+2,Sir Shafique Ahmed,,Thursday,10B
+2,Sir Irshad Qureshi,,Thursday,10C
+2,Sir Asif Nawaz,,Thursday,9A
+2,Sir Muhammad Taha,,Thursday,9B
+2,Sir Iqbal Ahmed,,Thursday,9C
+2,Sir Amir Shaikh Senior,,Thursday,8A
+2,Sir Amir Shaikh Junior,,Thursday,8B
+2,Miss Remelia Nausher,,Thursday,8C
+2,Sir Abdul Sami,,Thursday,7A
+2,Miss Anum Hussain,,Thursday,7B
+2,Sir Abdul Hameed,,Thursday,7C
+2,Sir Jamalullah,,Thursday,6A
+2,Sir Faiz Hussain,,Thursday,6B
+2,Sir Usama,,Thursday,6C
+2,Sir Bakir Shah,,Friday,10A
+2,Sir Faisal Ali,,Friday,10B
+2,Sir Irshad Qureshi,,Friday,10C
+2,Sir Romanulabdin,,Friday,9A
+2,Sir Asif Nawaz,,Friday,9B
+2,Sir Abdul Hameed,,Friday,9C
+2,Sir Shumail Arsalan,,Friday,8A
+2,Sir Shabeer Ahmed,,Friday,8B
+2,Sir Rafaqat Maseeh,,Friday,8C
+2,Sir Aman Arif,,Friday,7A
+2,Sir Imran Ahmed,,Friday,7B
+2,Sir Irshad Bhutto,,Friday,7C
+2,Sir Jawad ul Haq,,Friday,6A
+2,Sir Touqeer Hussain Shah,,Friday,6B
+2,Sir Abdul Rehman,,Friday,6C
+2,Sir Bakir Shah,,Saturday,10A
+2,Sir Shafique Ahmed,,Saturday,10B
+2,Sir Irshad Qureshi,,Saturday,10C
+2,Sir Khadim Hussain,,Saturday,9A
+2,Sir Muhammad Taha,,Saturday,9B
+2,Sir Iqbal Ahmed,,Saturday,9C
+2,Sir Amir Shaikh Senior,,Saturday,8A
+2,Sir Amir Shaikh Junior,,Saturday,8B
+2,Miss Remelia Nausher,,Saturday,8C
+2,Sir Abdul Sami,,Saturday,7A
+2,Miss Anum Hussain,,Saturday,7B
+2,Sir Abdul Hameed,,Saturday,7C
+2,Sir Jamalullah,,Saturday,6A
+2,Sir Faiz Hussain,,Saturday,6B
+2,Sir Usama,,Saturday,6C
+3,Sir Faisal Ali,,Monday,10A
+3,Sir Muhammad Taha,,Monday,10B
+3,Sir Irshad Qureshi,,Monday,10C
+3,Sir Romanulabdin,,Monday,9A
+3,Sir Khadim Hussain,,Monday,9B
+3,Sir Rafaqat Maseeh,,Monday,9C
+3,Sir Jawad ul Haq,,Monday,8A
+3,Sir Meer Muhammad,,Monday,8B
+3,Sir Aman Arif,,Monday,8C
+3,Sir Irshad Bhutto,,Monday,7A
+3,Miss Anum Hussain,,Monday,7B
+3,Sir Touqeer Hussain Shah,,Monday,7C
+3,Sir Faraz Ahmed,,Monday,6A
+3,Sir Abdul Rehman,,Monday,6B
+3,Sir Faisal Ali,,Tuesday,10A
+3,Sir Muhammad Taha,,Tuesday,10B
+3,Sir Irshad Qureshi,,Tuesday,10C
+3,Sir Romanulabdin,,Tuesday,9A
+3,Sir Amir Shaikh Senior,,Tuesday,9B
+3,Sir Rafaqat Maseeh,,Tuesday,9C
+3,Sir Faraz Ahmed,,Tuesday,8A
+3,Sir Aman Arif,,Tuesday,8B
+3,Sir Irshad Bhutto,,Tuesday,8C
+3,Sir Shabeer Ahmed,,Tuesday,7A
+3,Sir Abdul Rehman,,Tuesday,7B
+3,Sir Khadim Hussain,,Tuesday,7C
+3,Sir Jamalullah,,Tuesday,6A
+3,Sir Faisal Ali,,Wednesday,10A
+3,Sir Rafaqat Maseeh,,Wednesday,10B
+3,Sir Irshad Qureshi,,Wednesday,10C
+3,Sir Romanulabdin,,Wednesday,9A
+3,Sir Khadim Hussain,,Wednesday,9B
+3,Sir Abdul Hameed,,Wednesday,9C
+3,Sir Shumail Arsalan,,Wednesday,8A
+3,Sir Jawad ul Haq,,Wednesday,8B
+3,Sir Shabeer Ahmed,,Wednesday,8C
+3,Sir Aman Arif,,Wednesday,7A
+3,Miss Anum Hussain,,Wednesday,7B
+3,Sir Farhan Siddiqui,,Wednesday,7C
+3,Sir Touqeer Hussain Shah,,Wednesday,6A
+3,Sir Faraz Ahmed,,Wednesday,6B
+3,Sir Meer Muhammad,,Wednesday,6C
+3,Sir Faisal Ali,,Thursday,10A
+3,Sir Irshad Qureshi,,Thursday,10B
+3,Sir Romanulabdin,,Thursday,9A
+3,Sir Khadim Hussain,,Thursday,9B
+3,Sir Iqbal Ahmed,,Thursday,9C
+3,Sir Meer Muhammad,,Thursday,8A
+3,Sir Faraz Ahmed,,Thursday,8B
+3,Sir Rafaqat Maseeh,,Thursday,8C
+3,Sir Irshad Bhutto,,Thursday,7A
+3,Sir Shabeer Ahmed,,Thursday,7B
+3,Sir Aman Arif,,Thursday,7C
+3,Sir Usama,,Thursday,6A
+3,Sir Imran Ahmed,,Thursday,6B
+3,Sir Abdul Rehman,,Thursday,6C
+3,Sir Faisal Ali,,Friday,10A
+3,Sir Shafique Ahmed,,Friday,10B
+3,Sir Irshad Qureshi,,Friday,10C
+3,Sir Khadim Hussain,,Friday,9A
+3,Sir Romanulabdin,,Friday,9B
+3,Sir Iqbal Ahmed,,Friday,9C
+3,Sir Farhan Siddiqui,,Friday,8A
+3,Sir Faraz Ahmed,,Friday,8B
+3,Sir Rafaqat Maseeh,,Friday,8C
+3,Miss Anum Hussain,,Friday,7A
+3,Sir Irshad Bhutto,,Friday,7B
+3,Sir Imran Ahmed,,Friday,7C
+3,Sir Touqeer Hussain Shah,,Friday,6A
+3,Sir Abdul Rehman,,Friday,6B
+3,Sir Faisal Ali,,Saturday,10A
+3,Sir Muhammad Taha,,Saturday,10B
+3,Sir Irshad Qureshi,,Saturday,10C
+3,Sir Romanulabdin,,Saturday,9A
+3,Sir Khadim Hussain,,Saturday,9B
+3,Sir Iqbal Ahmed,,Saturday,9C
+3,Sir Jawad ul Haq,,Saturday,8A
+3,Sir Shabeer Ahmed,,Saturday,8B
+3,Sir Aman Arif,,Saturday,8C
+3,Sir Irshad Bhutto,,Saturday,7A
+3,Miss Anum Hussain,,Saturday,7B
+3,Sir Faiz Hussain,,Saturday,7C
+3,Sir Touqeer Hussain Shah,,Saturday,6A
+3,Sir Faraz Ahmed,,Saturday,6B
+3,Sir Usama,,Saturday,6C
+4,Sir Shafique Ahmed,,Monday,10A
+4,Sir Faisal Ali,,Monday,10B
+4,Sir Iqbal Ahmed,,Monday,10C
+4,Sir Khadim Hussain,,Monday,9A
+4,Sir Romanulabdin,,Monday,9B
+4,Sir Aman Arif,,Monday,9C
+4,Sir Abdul Sami,,Monday,8A
+4,Sir Jawad ul Haq,,Monday,8B
+4,Sir Abdul Rehman,,Monday,8C
+4,Sir Shabeer Ahmed,,Monday,7A
+4,Sir Imran Ahmed,,Monday,7B
+4,Sir Amir Shaikh Junior,,Monday,7C
+4,Sir Irshad Bhutto,,Monday,6A
+4,Sir Touqeer Hussain Shah,,Monday,6B
+4,Sir Usama,,Monday,6C
+4,Sir Shafique Ahmed,,Tuesday,10A
+4,Sir Faisal Ali,,Tuesday,10B
+4,Sir Iqbal Ahmed,,Tuesday,10C
+4,Sir Khadim Hussain,,Tuesday,9A
+4,Sir Romanulabdin,,Tuesday,9B
+4,Sir Aman Arif,,Tuesday,9C
+4,Sir Abdul Sami,,Tuesday,8A
+4,Sir Jawad ul Haq,,Tuesday,8B
+4,Sir Meer Muhammad,,Tuesday,8C
+4,Sir Shabeer Ahmed,,Tuesday,7A
+4,Sir Imran Ahmed,,Tuesday,7B
+4,Sir Abdul Rehman,,Tuesday,7C
+4,Sir Irshad Bhutto,,Tuesday,6A
+4,Sir Touqeer Hussain Shah,,Tuesday,6B
+4,Sir Usama,,Tuesday,6C
+4,Sir Faisal Ali,,Wednesday,10A
+4,Sir Muhammad Taha,,Wednesday,10B
+4,Sir Iqbal Ahmed,,Wednesday,10C
+4,Sir Khadim Hussain,,Wednesday,9A
+4,Sir Romanulabdin,,Wednesday,9B
+4,Sir Aman Arif,,Wednesday,9C
+4,Sir Shumail Arsalan,,Wednesday,8A
+4,Sir Abdul Sami,,Wednesday,8B
+4,Sir Jawad ul Haq,,Wednesday,8C
+4,Sir Abdul Rehman,,Wednesday,7A
+4,Sir Imran Ahmed,,Wednesday,7B
+4,Sir Faraz Ahmed,,Wednesday,7C
+4,Sir Amir Shaikh Junior,,Wednesday,6A
+4,Sir Irshad Bhutto,,Wednesday,6B
+4,Sir Touqeer Hussain Shah,,Wednesday,6C
+4,Sir Faisal Ali,,Thursday,10A
+4,Miss Ghazala Rizwi,,Thursday,10B
+4,Sir Khadim Hussain,,Thursday,9A
+4,Sir Romanulabdin,,Thursday,9B
+4,Sir Imran Ahmed,,Thursday,9C
+4,Sir Abdul Sami,,Thursday,8A
+4,Sir Jamalullah,,Thursday,8B
+4,Sir Aman Arif,,Thursday,8C
+4,Sir Shabeer Ahmed,,Thursday,7A
+4,Sir Faraz Ahmed,,Thursday,7B
+4,Sir Amir Shaikh Junior,,Thursday,7C
+4,Sir Touqeer Hussain Shah,,Thursday,6A
+4,Sir Shoaib,,Thursday,6B
+4,Sir Usama,,Thursday,6C
+4,Sir Shafique Ahmed,,Friday,10A
+4,Sir Bakir Shah,,Friday,10B
+4,Sir Iqbal Ahmed,,Friday,10C
+4,Sir Romanulabdin,,Friday,9A
+4,Sir Khadim Hussain,,Friday,9B
+4,Sir Aman Arif,,Friday,9C
+4,Sir Shabeer Ahmed,,Friday,8A
+4,Sir Amir Shaikh Senior,,Friday,8C
+4,Sir Faraz Ahmed,,Friday,7A
+4,Miss Anum Hussain,,Friday,7B
+4,Sir Amir Shaikh Junior,,Friday,7C
+4,Sir Usama,,Friday,6A
+4,Sir Touqeer Hussain Shah,,Friday,6B
+4,Sir Meer Muhammad,,Friday,6C
+4,Sir Shafique Ahmed,,Saturday,10A
+4,Miss Ghazala Rizwi,,Saturday,10B
+4,Sir Farhan Siddiqui,,Saturday,10C
+4,Sir Shumail Arsalan,,Saturday,9A
+4,Sir Khadim Hussain,,Saturday,9B
+4,Sir Romanulabdin,,Saturday,9C
+4,Sir Aman Arif,,Saturday,8A
+4,Sir Amir Shaikh Senior,,Saturday,8B
+4,Sir Irshad Bhutto,,Saturday,8C
+4,Sir Amir Shaikh Junior,,Saturday,7A
+4,Sir Meer Muhammad,,Saturday,7B
+4,Sir Imran Ahmed,,Saturday,7C
+4,Sir Jawad ul Haq,,Saturday,6A
+4,Miss Anum Hussain,,Saturday,6B
+4,Sir Abdul Rehman,,Saturday,6C
+5,Sir Bakir Shah,,Monday,10A
+5,Sir Rafaqat Maseeh,,Monday,10B
+5,Sir Farhan Siddiqui,,Monday,10C
+5,Sir Shumail Arsalan,,Monday,9A
+5,Sir Romanulabdin,,Monday,9B
+5,Sir Faiz Hussain,,Monday,9C
+5,Sir Iqbal Ahmed,,Monday,8A
+5,Sir Shabeer Ahmed,,Monday,8B
+5,Sir Jamalullah,,Monday,8C
+5,Miss Remelia Nausher,,Monday,7A
+5,Sir Imran Ahmed,,Monday,7B
+5,Sir Irshad Bhutto,,Monday,7C
+5,Sir Meer Muhammad,,Monday,6A
+5,Sir Jawad ul Haq,,Monday,6C
+5,Sir Faisal Ali,,Tuesday,10A
+5,Sir Rafaqat Maseeh,,Tuesday,10B
+5,Sir Farhan Siddiqui,,Tuesday,10C
+5,Sir Shumail Arsalan,,Tuesday,9A
+5,Sir Romanulabdin,,Tuesday,9B
+5,Sir Asif Nawaz,,Tuesday,9C
+5,Sir Iqbal Ahmed,,Tuesday,8A
+5,Sir Jamalullah,,Tuesday,8B
+5,Sir Shabeer Ahmed,,Tuesday,8C
+5,Miss Remelia Nausher,,Tuesday,7A
+5,Sir Faraz Ahmed,,Tuesday,7B
+5,Sir Shoaib,,Tuesday,7C
+5,Sir Amir Shaikh Junior,,Tuesday,6A
+5,Sir Touqeer Hussain Shah,,Tuesday,6B
+5,Sir Meer Muhammad,,Tuesday,6C
+5,Sir Rafaqat Maseeh,,Wednesday,10A
+5,Sir Faisal Ali,,Wednesday,10B
+5,Sir Farhan Siddiqui,,Wednesday,10C
+5,Sir Shumail Arsalan,,Wednesday,9A
+5,Sir Romanulabdin,,Wednesday,9B
+5,Sir Asif Nawaz,,Wednesday,9C
+5,Sir Iqbal Ahmed,,Wednesday,8A
+5,Sir Shabeer Ahmed,,Wednesday,8B
+5,Sir Jamalullah,,Wednesday,8C
+5,Miss Remelia Nausher,,Wednesday,7A
+5,Sir Meer Muhammad,,Wednesday,7B
+5,Sir Faraz Ahmed,,Wednesday,7C
+5,Sir Faiz Hussain,,Wednesday,6A
+5,Sir Imran Ahmed,,Wednesday,6B
+5,Sir Irshad Bhutto,,Wednesday,6C
+5,Sir Abdul Rehman,,Wednesday,6C
+5,Sir Bakir Shah,,Thursday,10A
+5,Sir Faisal Ali,,Thursday,10B
+5,Sir Farhan Siddiqui,,Thursday,10C
+5,Sir Shumail Arsalan,,Thursday,9A
+5,Sir Romanulabdin,,Thursday,9B
+5,Sir Asif Nawaz,,Thursday,9C
+5,Sir Aman Arif,,Thursday,8A
+5,Sir Jamalullah,,Thursday,8B
+5,Sir Shabeer Ahmed,,Thursday,8C
+5,Sir Abdul Rehman,,Thursday,7A
+5,Sir Imran Ahmed,,Thursday,7B
+5,Miss Anum Hussain,,Thursday,7C
+5,Sir Jawad ul Haq,,Thursday,6A
+5,Sir Irshad Bhutto,,Thursday,6B
+5,Sir Meer Muhammad,,Thursday,6C
+5,Sir Shoaib,,Thursday,6C
+5,Sir Rafaqat Maseeh,,Friday,10A
+5,Miss Ghazala Rizwi,,Friday,10B
+5,Sir Asif Nawaz,,Friday,9A
+5,Sir Romanulabdin,,Friday,9B
+5,Sir Aman Arif,,Friday,9C
+5,Sir Khadim Hussain,,Friday,8A
+5,Sir Shabeer Ahmed,,Friday,8B
+5,Miss Remelia Nausher,,Friday,8C
+5,Miss Anum Hussain,,Friday,7A
+5,Sir Imran Ahmed,,Friday,7B
+5,Sir Faiz Hussain,,Friday,7C
+5,Sir Farhan Siddiqui,,Friday,6A
+5,Sir Faraz Ahmed,,Friday,6B
+5,Sir Jawad ul Haq,,Friday,6C
+5,Sir Muhammad Taha,,Saturday,10A
+5,Sir Faisal Ali,,Saturday,10B
+5,Sir Farhan Siddiqui,,Saturday,10C
+5,Sir Shumail Arsalan,,Saturday,9A
+5,Sir Romanulabdin,,Saturday,9B
+5,Sir Asif Nawaz,,Saturday,9C
+5,Sir Aman Arif,,Saturday,8A
+5,Sir Jamalullah,,Saturday,8C
+5,Sir Amir Shaikh Senior,,Saturday,7A
+5,Sir Imran Ahmed,,Saturday,7B
+5,Sir Shabeer Ahmed,,Saturday,7C
+5,Sir Meer Muhammad,,Saturday,6A
+5,Sir Irshad Bhutto,,Saturday,6B
+5,Sir Abdul Rehman,,Saturday,6C
+6,Sir Rafaqat Maseeh,,Monday,10A
+6,Sir Shafique Ahmed,,Monday,10B
+6,Sir Faisal Ali,,Monday,10C
+6,Sir Amir Shaikh Senior,,Monday,9A
+6,Sir Romanulabdin,,Monday,9B
+6,Sir Abdul Hameed,,Monday,9C
+6,Sir Shumail Arsalan,,Monday,8A
+6,Sir Khadim Hussain,,Monday,8B
+6,Sir Abdul Sami,,Monday,8C
+6,Miss Anum Hussain,,Monday,7B
+6,Sir Faraz Ahmed,,Monday,7C
+6,Sir Abdul Rehman,,Monday,6A
+6,Sir Farhan Siddiqui,,Monday,6B
+6,Sir Jamalullah,,Monday,6C
+6,Sir Muhammad Taha,,Tuesday,10A
+6,Sir Bakir Shah,,Tuesday,10B
+6,Sir Faisal Ali,,Tuesday,10C
+6,Sir Amir Shaikh Senior,,Tuesday,9A
+6,Sir Romanulabdin,,Tuesday,9B
+6,Sir Aman Arif,,Tuesday,9C
+6,Sir Khadim Hussain,,Tuesday,8A
+6,Sir Abdul Sami,,Tuesday,8B
+6,Sir Rafaqat Maseeh,,Tuesday,8C
+6,Miss Anum Hussain,,Tuesday,7A
+6,Sir Jawad ul Haq,,Tuesday,7C
+6,Sir Usama,,Tuesday,6A
+6,Sir Farhan Siddiqui,,Tuesday,6B
+6,Sir Abdul Rehman,,Tuesday,6C
+6,Sir Bakir Shah,,Wednesday,10A
+6,Miss Ghazala Rizwi,,Wednesday,10B
+6,Sir Faisal Ali,,Wednesday,10C
+6,Sir Romanulabdin,,Wednesday,9B
+6,Sir Aman Arif,,Wednesday,9C
+6,Sir Shabeer Ahmed,,Wednesday,8A
+6,Sir Abdul Sami,,Wednesday,8B
+6,Sir Rafaqat Maseeh,,Wednesday,8C
+6,Sir Shoaib,,Wednesday,7A
+6,Sir Imran Ahmed,,Wednesday,7B
+6,Sir Abdul Rehman,,Wednesday,7C
+6,Sir Usama,,Wednesday,6A
+6,Sir Khadim Hussain,,Wednesday,6B
+6,Sir Jawad ul Haq,,Wednesday,6C
+6,Sir Faisal Ali,,Thursday,10B
+6,Sir Iqbal Ahmed,,Thursday,10C
+6,Sir Amir Shaikh Senior,,Thursday,9A
+6,Sir Asif Nawaz,,Thursday,9B
+6,Sir Rafaqat Maseeh,,Thursday,9C
+6,Sir Khadim Hussain,,Thursday,8A
+6,Sir Abdul Sami,,Thursday,8B
+6,Miss Remelia Nausher,,Thursday,8C
+6,Sir Faraz Ahmed,,Thursday,7A
+6,Sir Farhan Siddiqui,,Thursday,7B
+6,Sir Abdul Rehman,,Thursday,7C
+6,Sir Touqeer Hussain Shah,,Thursday,6A
+6,Sir Amir Shaikh Junior,,Thursday,6B
+6,Sir Muhammad Taha,,Thursday,6C
+6,Sir Faisal Ali,,Saturday,10A
+6,Sir Bakir Shah,,Saturday,10B
+6,Sir Iqbal Ahmed,,Saturday,10C
+6,Sir Romanulabdin,,Saturday,9B
+6,Sir Imran Ahmed,,Saturday,9C
+6,Sir Jamalullah,,Saturday,8A
+6,Sir Abdul Sami,,Saturday,8B
+6,Sir Rafaqat Maseeh,,Saturday,8C
+6,Sir Faraz Ahmed,,Saturday,7A
+6,Sir Meer Muhammad,,Saturday,7B
+6,Sir Jawad ul Haq,,Saturday,7C
+6,Sir Shoaib,,Saturday,6A
+6,Sir Irshad Bhutto,,Saturday,6B
+6,Sir Farhan Siddiqui,,Saturday,6C
+7,Sir Muhammad Taha,,Monday,10A
+7,Miss Ghazala Rizwi,,Monday,10B
+7,Sir Abdul Rehman,,Monday,10C
+7,Sir Faiz Hussain,,Monday,9A
+7,Sir Asif Nawaz,,Monday,9B
+7,Sir Imran Ahmed,,Monday,9C
+7,Sir Shabeer Ahmed,,Monday,8A
+7,Sir Rafaqat Maseeh,,Monday,8B
+7,Sir Amir Shaikh Senior,,Monday,8C
+7,Sir Farhan Siddiqui,,Monday,7A
+7,Miss Anum Hussain,,Monday,7B
+7,Sir Jawad ul Haq,,Monday,7C
+7,Sir Usama Shaikh,,Monday,6A
+7,Sir Irshad Bhutto,,Monday,6B
+7,Sir Bakir Shah,,Tuesday,10A
+7,Miss Ghazala Rizwi,,Tuesday,10B
+7,Sir Irshad Qureshi,,Tuesday,10C
+7,Sir Faiz Hussain,,Tuesday,9A
+7,Sir Khadim Hussain,,Tuesday,9B
+7,Sir Shabeer Ahmed,,Tuesday,8A
+7,Sir Rafaqat Maseeh,,Tuesday,8B
+7,Sir Faraz Ahmed,,Tuesday,8C
+7,Sir Imran Ahmed,,Tuesday,7A
+7,Sir Farhan Siddiqui,,Tuesday,7B
+7,Sir Jawad ul Haq,,Tuesday,7C
+7,Sir Touqeer Hussain Shah,,Tuesday,6A
+7,Sir Irshad Bhutto,,Tuesday,6B
+7,Sir Abdul Rehman,,Tuesday,6C
+7,Sir Shafique Ahmed,,Wednesday,10A
+7,Sir Bakir Shah,,Wednesday,10B
+7,Sir Faisal Ali,,Wednesday,10C
+7,Sir Asif Nawaz,,Wednesday,9A
+7,Sir Faiz Hussain,,Wednesday,9B
+7,Sir Rafaqat Maseeh,,Wednesday,8B
+7,Sir Amir Shaikh Senior,,Wednesday,8C
+7,Sir Irshad Bhutto,,Wednesday,7A
+7,Sir Meer Muhammad,,Wednesday,7B
+7,Sir Jawad ul Haq,,Wednesday,7C
+7,Sir Touqeer Hussain Shah,,Wednesday,6A
+7,Sir Farhan Siddiqui,,Wednesday,6B
+7,Sir Abdul Rehman,,Wednesday,6C
+7,Sir Shafique Ahmed,,Thursday,10A
+7,Sir Bakir Shah,,Thursday,10B
+7,Sir Faisal Ali,,Thursday,10C
+7,Sir Faiz Hussain,,Thursday,9A
+7,Sir Romanulabdin,,Thursday,9B
+7,Sir Abdul Hameed,,Thursday,9C
+7,Sir Shumail Arsalan,,Thursday,8A
+7,Sir Rafaqat Maseeh,,Thursday,8C
+7,Sir Faraz Ahmed,,Thursday,7A
+7,Sir Farhan Siddiqui,,Thursday,7B
+7,Sir Imran Ahmed,,Thursday,7C
+7,Sir Jawad ul Haq,,Thursday,6A
+7,Sir Touqeer Hussain Shah,,Thursday,6B
+7,Sir Irshad Bhutto,,Thursday,6C
+7,Sir Faisal Ali,,Saturday,10A
+7,Sir Shafique Ahmed,,Saturday,10B
+7,Sir Abdul Rehman,,Saturday,10C
+7,Sir Faiz Hussain,,Saturday,9A
+7,Sir Abdul Hameed,,Saturday,9C
+7,Sir Shumail Arsalan,,Saturday,8A
+7,Sir Faraz Ahmed,,Saturday,8B
+7,Sir Rafaqat Maseeh,,Saturday,8C
+7,Sir Farhan Siddiqui,,Saturday,7A
+7,Miss Anum Hussain,,Saturday,7B
+7,Sir Imran Ahmed,,Saturday,7C
+7,Sir Aman Arif,,Saturday,6A
+7,Sir Touqeer Hussain Shah,,Saturday,6B
+7,Sir Shoaib,,Saturday,6C
+8,Sir Faisal Ali,,Monday,10A
+8,Sir Bakir Shah,,Monday,10B
+8,Sir Irshad Qureshi,,Monday,10C
+8,Sir Asif Nawaz,,Monday,9A
+8,Sir Aman Arif,,Monday,9C
+8,Sir Jamalullah,,Monday,8A
+8,Sir Amir Shaikh Junior,,Monday,8B
+8,Miss Remelia Nausher,,Monday,8C
+8,Sir Faraz Ahmed,,Monday,7A
+8,Sir Shoaib,,Monday,7B
+8,Sir Jawad ul Haq,,Monday,7C
+8,Sir Touqeer Hussain Shah,,Monday,6A
+8,Sir Imran Ahmed,,Monday,6B
+8,Sir Abdul Rehman,,Monday,6C
+8,Sir Shafique Ahmed,,Tuesday,10B
+8,Sir Abdul Rehman,,Tuesday,10C
+8,Sir Asif Nawaz,,Tuesday,9A
+8,Sir Faiz Hussain,,Tuesday,9B
+8,Sir Abdul Hameed,,Tuesday,9C
+8,Sir Shumail Arsalan,,Tuesday,8A
+8,Sir Jawad ul Haq,,Tuesday,8B
+8,Sir Jamalullah,,Tuesday,8C
+8,Sir Farhan Siddiqui,,Tuesday,7A
+8,Miss Anum Hussain,,Tuesday,7B
+8,Sir Irshad Bhutto,,Tuesday,7C
+8,Sir Aman Arif,,Tuesday,6A
+8,Sir Touqeer Hussain Shah,,Tuesday,6B
+8,Sir Shoaib,,Tuesday,6C
+8,Sir Faisal Ali,,Wednesday,10A
+8,Sir Shafique Ahmed,,Wednesday,10B
+8,Sir Irshad Qureshi,,Wednesday,10C
+8,Sir Asif Nawaz,,Wednesday,9A
+8,Sir Amir Shaikh Senior,,Wednesday,9B
+8,Sir Aman Arif,,Wednesday,9C
+8,Sir Khadim Hussain,,Wednesday,8A
+8,Sir Amir Shaikh Junior,,Wednesday,8B
+8,Miss Anum Hussain,,Wednesday,7B
+8,Sir Shoaib,,Wednesday,7C
+8,Sir Touqeer Hussain Shah,,Wednesday,6A
+8,Sir Imran Ahmed,,Wednesday,6B
+8,Sir Muhammad Taha,,Wednesday,6C
+8,Sir Muhammad Taha,,Thursday,10A
+8,Sir Shafique Ahmed,,Thursday,10B
+8,Sir Abdul Rehman,,Thursday,10C
+8,Sir Asif Nawaz,,Thursday,9A
+8,Sir Amir Shaikh Senior,,Thursday,9B
+8,Sir Aman Arif,,Thursday,9C
+8,Sir Farhan Siddiqui,,Thursday,8A
+8,Miss Remelia Nausher,,Thursday,8C
+8,Miss Anum Hussain,,Thursday,7A
+8,Sir Shabeer Ahmed,,Thursday,7B
+8,Sir Faiz Hussain,,Thursday,7C
+8,Sir Shoaib,,Thursday,6A
+8,Sir Khadim Hussain,,Thursday,6B
+8,Sir Jawad ul Haq,,Thursday,6C
+8,Sir Bakir Shah,,Saturday,10A
+8,Sir Faisal Ali,,Saturday,10C
+8,Sir Asif Nawaz,,Saturday,9A
+8,Sir Faiz Hussain,,Saturday,9B
+8,Sir Aman Arif,,Saturday,9C
+8,Sir Khadim Hussain,,Saturday,8A
+8,Sir Shabeer Ahmed,,Saturday,8B
+8,Miss Remelia Nausher,,Saturday,8C
+8,Sir Shoaib,,Saturday,7A
+8,Sir Faraz Ahmed,,Saturday,7B
+8,Sir Farhan Siddiqui,,Saturday,7C
+8,Sir Touqeer Hussain Shah,,Saturday,6A
+8,Sir Amir Shaikh Junior,,Saturday,6B
+8,Sir Jamalullah,,Saturday,6C

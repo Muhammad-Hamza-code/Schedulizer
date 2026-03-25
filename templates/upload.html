@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<div class="container d-flex justify-content-center align-items-center py-5">
+
+    <div class="card shadow-sm p-4" style="max-width: 600px; width: 100%;">
+
+        <h3 class="text-center mb-4">📂 Upload Your Files</h3>
+
+        <form action="{{ url_for('upload') }}" method="POST" enctype="multipart/form-data" onsubmit="showLoader()">
+
+            <!-- Timetable CSV -->
+            <div class="mb-4">
+                <label for="timetable_file" class="form-label fw-semibold">
+                    Timetable CSV
+                </label>
+
+                <input type="file" class="form-control" id="timetable_file" name="timetable_file" accept=".csv"
+                    required>
+
+                <div class="form-text">
+                    Required columns: Period Number, Teacher, Subject, Day, Class Name
+                </div>
+            </div>
+
+            <!-- Teacher CSV -->
+            <div class="mb-4">
+                <label for="teacher_file" class="form-label fw-semibold">
+                    Teacher CSV
+                </label>
+
+                <input type="file" class="form-control" id="teacher_file" name="teacher_file" accept=".csv" required>
+
+                <div class="form-text">
+                    Required columns: Teacher, Mobile Number
+                </div>
+            </div>
+
+            <!-- Loader -->
+            <div id="loader" class="text-center mb-3" style="display:none;">
+                <div class="spinner-border text-primary" role="status"></div>
+                <p class="mt-2">Uploading & processing... ⏳</p>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-primary w-100">
+                Upload Files
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script>
+    function showLoader() {
+        document.getElementById("loader").style.display = "block";
+    }
+</script>
+
+{% endblock %}

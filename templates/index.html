@@ -1,0 +1,234 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<!-- HERO SECTION -->
+<div class="container my-4">
+    <div class="row align-items-center">
+
+        <!-- Image -->
+        <div class="col-md-6 mb-3 mb-md-0">
+            <img src="{{ url_for('static', filename='images/hero.jpg') }}" class="img-fluid rounded" alt="Hero Image">
+        </div>
+
+        <!-- Card -->
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-header">Welcome</div>
+                <div class="card-body">
+                    <h5 class="card-title">Your Smart Timetable Starts here</h5>
+                    <p class="card-text">
+                        From assigning teachers to balancing workloads, all in one place.
+                    </p>
+                    <a href="{{ url_for('login') }}" class="btn btn-info">Get Started</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- QUOTE -->
+<figure class="text-center my-5">
+    <blockquote class="blockquote">
+        <p>Keep your classes covered without the hassle.</p>
+    </blockquote>
+    <figcaption class="blockquote-footer">
+        Smart substitute <cite title="Source title">Assignment</cite>
+    </figcaption>
+</figure>
+
+<!-- FEATURE CARDS -->
+<div class="container my-5">
+    <div class="row g-4">
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/card_1.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Assign Substitutes Effortlessly</h5>
+                    <p>Automatically assign substitutes when teachers are absent.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/card_2.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Balanced Teacher Workload</h5>
+                    <p>Distribute teaching periods fairly among teachers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-sm-6 col-lg-4">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/card_3.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Period Timing & Tracking</h5>
+                    <p>Track live periods and monitor teacher availability in real time.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- GET STARTED SECTION -->
+<div class="container my-5 text-center">
+    <div class="card shadow-sm p-4">
+        <h4>Here’s How to Get Started</h4>
+        <p class="text-muted">Follow these simple steps to streamline scheduling.</p>
+        <a href="#" class="btn btn-primary">Let’s Go</a>
+    </div>
+</div>
+
+<!-- STEP CARDS -->
+<div class="container my-5">
+    <div class="row g-4">
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 bg-dark shadow-sm">
+                <div class="card-header">Upload Teachers List</div>
+                <div class="card-body">
+                    <h5>Add Your Teachers</h5>
+                    <p>Upload CSV with teacher details for tracking availability.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 bg-dark shadow-sm">
+                <div class="card-header">Upload Timetable</div>
+                <div class="card-body">
+                    <h5>Import Class Timetable</h5>
+                    <p>Upload timetable CSV with periods, classes, and teachers.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 bg-dark shadow-sm">
+                <div class="card-header">Automatic Substitute Assignment</div>
+                <div class="card-body">
+                    <h5>Smart Matching</h5>
+                    <p>System assigns best available substitute automatically.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 bg-dark shadow-sm">
+                <div class="card-header">Live Period Tracking</div>
+                <div class="card-body">
+                    <h5>Real-Time Monitoring</h5>
+                    <p>Track ongoing periods and teacher status live.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- WHO IS IT FOR -->
+<div class="container my-5">
+    <div class="text-center mb-4">
+        <h2 class="fw-bold">Who Schedulizer Is For</h2>
+        <p class="text-muted">Designed for every role in academic scheduling</p>
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/land1.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>School Administrations</h5>
+                    <p>Manage schedules and substitutions easily.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/land2.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Academic Coordinators</h5>
+                    <p>Avoid clashes and handle absences quickly.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/land3.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Teachers</h5>
+                    <p>Clear period allocations and balanced workload.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/land4.jpg') }}" class="card-img-top" alt="">
+                <div class="card-body">
+                    <h5>Modern Schools</h5>
+                    <p>Perfect for digital timetable systems.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer class="footer mt-5">
+    <div class="container py-4">
+        <div class="row">
+
+            <div class="col-md-4 mb-3">
+                <h5>Schedulizer</h5>
+                <p class="small text-light opacity-75">
+                    Smart substitute scheduling for schools.
+                </p>
+            </div>
+
+            <div class="col-md-2 mb-3">
+                <h6>Navigation</h6>
+                <ul class="list-unstyled small">
+                    <li><a href="#" class="text-light">Home</a></li>
+                    <li><a href="#" class="text-light">Features</a></li>
+                    <li><a href="#" class="text-light">How it Works</a></li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <h6>For Schools</h6>
+                <ul class="list-unstyled small">
+                    <li>Substitute Assignment</li>
+                    <li>Workload Balancing</li>
+                    <li>Timetable Support</li>
+                </ul>
+            </div>
+
+            <div class="col-md-3 mb-3">
+                <h6>Status</h6>
+                <p class="small opacity-75">
+                    MVP version <br>
+                    Built for schools only
+                </p>
+            </div>
+
+        </div>
+
+        <hr class="border-light opacity-25">
+
+        <div class="text-center small opacity-75">
+            © 2026 Schedulizer. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+{% endblock body %}
