@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block content %}
+{% block body %}
 
 <!-- HERO SECTION -->
 <div class="container my-4">
@@ -89,7 +89,7 @@
     <div class="row g-4">
 
         <div class="col-12 col-md-6">
-            <div class="card h-100 bg-dark shadow-sm">
+            <div class="card h-100 bg-dark text-white shadow-sm">
                 <div class="card-header">Upload Teachers List</div>
                 <div class="card-body">
                     <h5>Add Your Teachers</h5>
@@ -99,7 +99,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <div class="card h-100 bg-dark shadow-sm">
+            <div class="card h-100 bg-dark text-white shadow-sm">
                 <div class="card-header">Upload Timetable</div>
                 <div class="card-body">
                     <h5>Import Class Timetable</h5>
@@ -109,7 +109,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <div class="card h-100 bg-dark shadow-sm">
+            <div class="card h-100 bg-dark text-white shadow-sm">
                 <div class="card-header">Automatic Substitute Assignment</div>
                 <div class="card-body">
                     <h5>Smart Matching</h5>
@@ -119,7 +119,7 @@
         </div>
 
         <div class="col-12 col-md-6">
-            <div class="card h-100 bg-dark shadow-sm">
+            <div class="card h-100 bg-dark text-white shadow-sm">
                 <div class="card-header">Live Period Tracking</div>
                 <div class="card-body">
                     <h5>Real-Time Monitoring</h5>
@@ -182,53 +182,5 @@
 
     </div>
 </div>
-
-<!-- FOOTER -->
-<footer class="footer mt-5">
-    <div class="container py-4">
-        <div class="row">
-
-            <div class="col-md-4 mb-3">
-                <h5>Schedulizer</h5>
-                <p class="small text-light opacity-75">
-                    Smart substitute scheduling for schools.
-                </p>
-            </div>
-
-            <div class="col-md-2 mb-3">
-                <h6>Navigation</h6>
-                <ul class="list-unstyled small">
-                    <li><a href="#" class="text-light">Home</a></li>
-                    <li><a href="#" class="text-light">Features</a></li>
-                    <li><a href="#" class="text-light">How it Works</a></li>
-                </ul>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <h6>For Schools</h6>
-                <ul class="list-unstyled small">
-                    <li>Substitute Assignment</li>
-                    <li>Workload Balancing</li>
-                    <li>Timetable Support</li>
-                </ul>
-            </div>
-
-            <div class="col-md-3 mb-3">
-                <h6>Status</h6>
-                <p class="small opacity-75">
-                    MVP version <br>
-                    Built for schools only
-                </p>
-            </div>
-
-        </div>
-
-        <hr class="border-light opacity-25">
-
-        <div class="text-center small opacity-75">
-            © 2026 Schedulizer. All rights reserved.
-        </div>
-    </div>
-</footer>
 
 {% endblock %}
