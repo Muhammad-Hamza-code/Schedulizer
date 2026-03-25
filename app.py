@@ -321,7 +321,7 @@ def periods():
 
     user_periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
     return render_template("periods.html", periods=user_periods)
-@app.route("/period/delete/<int:id>")
+@app.route("/period/delete/<int:id>",methods=["POST"])
 @login_required
 def delete_period(id):
     period = Period.query.get_or_404(id)

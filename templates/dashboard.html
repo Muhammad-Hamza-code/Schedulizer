@@ -165,32 +165,15 @@
     }
 
 
-    // ---------------- WORKLOAD CHART ----------------
-    const labels = {{ teacher_labels | tojson }};
-    const values = {{ teacher_values | tojson }};
+    <div class="row g-2">
+        {% for label, value in teacher_labels|zip(teacher_values) %}
+        <div class="col-6 col-md-3">
+            <div class="card p-2 text-center shadow-sm">
+                <h6 class="mb-1">{{ label }}</h6>
+                <h5 class="fw-bold">{{ value }}</h5>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
 
-    new Chart(document.getElementById("teacherChart"), {
-        type: 'bar',
-        data: {
-            labels: labels,
-            datasets: [{
-                label: 'Total Workload (Including Substitutions)',
-                data: values
-            }]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        precision: 0
-                    }
-                }
-            }
-        }
-    });
-
-</script>
-
-{% endblock %}
+    {% endblock %}
