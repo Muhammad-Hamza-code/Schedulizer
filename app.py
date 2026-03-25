@@ -8,6 +8,7 @@ from models import Absence, Substitution, db, User, Timetable, Teacher, Period
 import csv
 import pandas as pd
 import statistics
+import os
 app = Flask(__name__)
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -571,5 +572,5 @@ def undo_absent(teacher_id):
 
     return redirect(url_for("teachers_page"))
 
-if __name__ == "__main__":
-    app.run(debug=True)
+if _name_ == "_main_":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
