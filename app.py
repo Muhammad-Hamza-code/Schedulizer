@@ -40,7 +40,7 @@ def login():
             return redirect(url_for("login"))
     return render_template("login.html")
 
-@app.route("/logout",methods=["POST"])
+@app.route("/logout")
 @login_required
 def logout():
     logout_user()
@@ -76,6 +76,7 @@ def dashboard():
     # ---- Fetch data ----
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
+    teacherdata = list(zip[teacher_labels,teacher_values])
 
     timetable = Timetable.query.filter_by(
         user_id=current_user.id,
@@ -193,7 +194,8 @@ def dashboard():
         total_classes=total_classes,
         teacher_labels=teacher_labels,
         teacher_values=teacher_values,
-        fairness_score=fairness_score
+        fairness_score=fairness_score,
+        teacherdata=teacherdata
     )
 def validate_csv(file, expected_columns):
     """Validate CSV columns"""
