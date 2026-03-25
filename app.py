@@ -6,7 +6,6 @@ from werkzeug.security import generate_password_hash,check_password_hash
 from config import Config
 from models import Absence, Substitution, db, User, Timetable, Teacher, Period 
 import csv
-import pandas as pd
 import statistics
 import os
 app = Flask(__name__)
