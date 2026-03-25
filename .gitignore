@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+
+# Environment (you don’t have now but future safe)
+venv/
+.env
+
+# Database / instance
+instance/
+
+# Temporary files
+temporary.py
+
+# System files
+.DS_Store
+Thumbs.db
