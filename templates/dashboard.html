@@ -106,7 +106,7 @@
     </div>
 
     <!-- WORKLOAD + FAIRNESS -->
-    <div class="card p-4 shadow-sm mb-4">
+    <div class="card p-4 shadow-sm mb-3">
         <h4>⚖ Workload Fairness</h4>
 
         <div class="mb-3">
@@ -122,63 +122,23 @@
         <canvas id="teacherChart"></canvas>
     </div>
 
-</div>
-
-<!-- CHART.JS -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<script>
-
-    // ---------------- CLOCK ----------------
-    function updateDateTime() {
-        const now = new Date();
-        document.getElementById("datetime").innerText = now.toLocaleString();
-    }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
-
-
-    // ---------------- COUNTDOWN ----------------
-    let endTime = "{{ current_period_obj.end_time.strftime('%H:%M') if current_period_obj else '' }}";
-
-    if (endTime) {
-        let end = new Date();
-        let [hours, minutes] = endTime.split(":");
-        end.setHours(parseInt(hours), parseInt(minutes), 0);
-
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const distance = end - now;
-
-            if (distance <= 0) {
-                document.getElementById("countdown").innerText = "Period ended";
-                return;
-            }
-
-            const mins = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const secs = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById("countdown").innerText = mins + "m " + secs + "s";
-        }
-
-        setInterval(updateCountdown, 1000);
-    }
-
-</script>
-
-<!-- TEACHER WORKLOAD CARDS -->
-<div class="card p-4 shadow-sm mb-4">
-    <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
-    <div class="row g-2">
-        {% for label, value in teacherdata %}
-        <div class="col-6 col-md-3">
-            <div class="card p-2 text-center shadow-sm">
-                <h6 class="mb-1">{{ label }}</h6>
-                <h5 class="fw-bold">{{ value }}</h5>
+    <!-- TEACHER WORKLOAD CARDS -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
+        <div class="row g-2">
+            {% for label, value in teacherdata %}
+            <div class="col-6 col-md-3">
+                <div class="card p-2 text-center shadow-sm">
+                    <h6 class="mb-1">{{ label }}</h6>
+                    <h5 class="fw-bold">{{ value }}</h5>
+                </div>
             </div>
+            {% endfor %}
         </div>
-        {% endfor %}
     </div>
+
+</div>
+</div>
 </div>
 
 {% endblock %}
