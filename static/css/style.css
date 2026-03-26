@@ -336,6 +336,234 @@ body.dark .navbar .nav-link:hover {
     color: var(--primary) !important;
 }
 
+/* =========================
+   MOBILE RESPONSIVENESS (@media queries)
+========================= */
+
+/* Tablets and below */
+@media (max-width: 768px) {
+    body {
+        font-size: 14px;
+    }
+
+    .container {
+        padding: 10px;
+    }
+
+    .navbar {
+        padding: 0.5rem 0;
+    }
+
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+
+    .card {
+        padding: 12px;
+        margin-bottom: 12px;
+    }
+
+    .btn {
+        padding: 8px 12px;
+        font-size: 14px;
+    }
+
+    .btn-block,
+    .w-100 {
+        width: 100%;
+    }
+
+    table {
+        font-size: 12px;
+    }
+
+    th,
+    td {
+        padding: 8px !important;
+    }
+
+    .col-md-3,
+    .col-md-4,
+    .col-md-6 {
+        margin-bottom: 10px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    h3 {
+        font-size: 1.2rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    body {
+        font-size: 13px;
+    }
+
+    .container {
+        padding: 8px;
+        margin-top: 70px !important;
+    }
+
+    .navbar {
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 0.25rem 0;
+    }
+
+    .navbar-brand {
+        font-size: 1.1rem;
+    }
+
+    .navbar-collapse {
+        padding: 10px;
+    }
+
+    .dropdown-menu {
+        min-width: 180px;
+    }
+
+    .card {
+        padding: 10px;
+        border-radius: 8px;
+    }
+
+    .btn {
+        padding: 6px 10px;
+        font-size: 13px;
+        width: 100%;
+    }
+
+    .btn-group,
+    .btn-toolbar {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn+.btn {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    table {
+        font-size: 11px;
+    }
+
+    th,
+    td {
+        padding: 6px !important;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    h2 {
+        font-size: 1.2rem;
+    }
+
+    h3 {
+        font-size: 1rem;
+    }
+
+    h4,
+    h5,
+    h6 {
+        font-size: 0.95rem;
+    }
+
+    .row {
+        margin: 0;
+    }
+
+    [class*='col-'] {
+        padding: 4px;
+    }
+
+    .modal {
+        padding: 0 !important;
+    }
+
+    .modal-dialog {
+        margin: 10px;
+        width: 100%;
+        max-width: calc(100% - 20px);
+    }
+
+    .modal-body {
+        padding: 1rem;
+    }
+
+    input,
+    select,
+    textarea {
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 6px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--primary);
+    }
+
+    .alert {
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    footer {
+        padding: 10px;
+        font-size: 12px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-muted {
+        font-size: 12px;
+    }
+
+    .badge {
+        font-size: 11px;
+        padding: 3px 6px;
+    }
+}
+}
+
 /* Fix navbar collapse menu */
 body.dark .navbar-collapse {
     background: var(--card);

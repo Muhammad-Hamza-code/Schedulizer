@@ -76,7 +76,6 @@ def dashboard():
     # ---- Fetch data ----
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
-    teacherdata = list(zip[teacher_labels,teacher_values])
 
     timetable = Timetable.query.filter_by(
         user_id=current_user.id,
@@ -168,6 +167,7 @@ def dashboard():
     # ---- CHART DATA ----
     teacher_labels = list(workload.keys())
     teacher_values = list(workload.values())
+    teacherdata = list(zip(teacher_labels, teacher_values))
 
     # ---- FAIRNESS CALCULATION ----
 
