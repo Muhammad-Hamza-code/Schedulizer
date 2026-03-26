@@ -21,7 +21,7 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 @app.route("/")
-def home():
+def index():
     return render_template("index.html")
 
 @app.route("/login", methods=["GET", "POST"])
