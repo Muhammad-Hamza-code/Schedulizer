@@ -164,7 +164,11 @@
         setInterval(updateCountdown, 1000);
     }
 
+</script>
 
+<!-- TEACHER WORKLOAD CARDS -->
+<div class="card p-4 shadow-sm mb-4">
+    <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
     <div class="row g-2">
         {% for label, value in teacherdata %}
         <div class="col-6 col-md-3">
@@ -175,5 +179,6 @@
         </div>
         {% endfor %}
     </div>
+</div>
 
-    {% endblock %}
+{% endblock %}
