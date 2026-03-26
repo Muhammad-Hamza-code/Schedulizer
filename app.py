@@ -154,26 +154,32 @@ def dashboard():
     ).all()
 
     # ---- WORKLOAD (INCLUDING SUBSTITUTIONS) ----
+    # Get list of absent teacher names
+    absent_teacher_names = [db.session.get(Teacher, a.teacher_id).name for a in absentees]
+    
     workload = {}
 
+    # Only include teachers who are NOT absent
     for t in today_periods:
         teacher_name = t.teacher.name
-        workload[teacher_name] = workload.get(teacher_name, 0) + 1
+        # Exclude absent teachers from workload
+        if teacher_name not in absent_teacher_names:
+            workload[teacher_name] = workload.get(teacher_name, 0) + 1
 
-    # Include substitutions as extra load
+    # Include substitutions as extra load (they are not absent)
     for sub in substitutions:
-        workload[sub.substitute_teacher] = workload.get(sub.substitute_teacher, 0) + 1
+        if sub.substitute_teacher not in absent_teacher_names:
+            workload[sub.substitute_teacher] = workload.get(sub.substitute_teacher, 0) + 1
 
     # ---- CHART DATA ----
     teacher_labels = list(workload.keys())
     teacher_values = list(workload.values())
     teacherdata = list(zip(teacher_labels, teacher_values))
 
-    # ---- FAIRNESS CALCULATION ----
-
+    # ---- FAIRNESS CALCULATION (EXCLUDING ABSENT TEACHERS) ----
     values = list(workload.values())
 
-    if values:
+    if values and len(values) > 1:
         avg = sum(values) / len(values)
         variance = statistics.pvariance(values)
 
@@ -195,7 +201,8 @@ def dashboard():
         teacher_labels=teacher_labels,
         teacher_values=teacher_values,
         fairness_score=fairness_score,
-        teacherdata=teacherdata
+        teacherdata=teacherdata,
+        absent_teacher_names=absent_teacher_names
     )
 def validate_csv(file, expected_columns):
     """Validate CSV columns"""
