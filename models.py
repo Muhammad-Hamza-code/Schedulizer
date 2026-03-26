@@ -37,6 +37,7 @@ class Period(db.Model):
     end_time = db.Column(db.Time, nullable=False)
     max_periods_per_teacher = db.Column(db.Integer, default=6, nullable=False)  # Max daily workload
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    timetables = db.relationship("Timetable", backref="period", lazy=True, cascade="all, delete-orphan")
 class SubstitutionRecord(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     absent_teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)

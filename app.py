@@ -485,7 +485,7 @@ def assign_substitute():
                 "class": t.class_name,
                 "period": t.period_number,
                 "substitute": substitute.name,
-                "absent teacher": Teacher.query.get(absent_id).name
+                "absent teacher": db.session.get(Teacher, absent_id).name
             })
 
     db.session.commit()
