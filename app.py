@@ -19,7 +19,7 @@ with app.app_context():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -269,18 +269,20 @@ def upload():
         timetable_file.seek(0)
         timetable_reader = csv.DictReader(timetable_file.read().decode("utf-8").splitlines())
         normalized_headers_t = {h.lower().replace(" ", "_"): h for h in timetable_reader.fieldnames}
+        missing_periods = []
+        
         for row in timetable_reader:
-            period_number = row[normalized_headers_t["period_number"]].strip()
-            period_number = str(period_number)
+            period_number_str = row[normalized_headers_t["period_number"]].strip()
+            period_number_int = int(period_number_str)
 
             # find the Period object in DB
             period = Period.query.filter_by(
                 user_id=current_user.id,
-                name= f"Period {period_number}"  # match your Period.name with CSV Period Number
+                name= f"Period {period_number_str}"  # match your Period.name with CSV Period Number
             ).first()
 
             if not period:
-                flash(f"Period {period_number} not found in DB", "danger")
+                missing_periods.append(period_number_str)
                 continue  # skip this row if Period not found
 
             t = Timetable(
@@ -288,7 +290,7 @@ def upload():
                 teacher_id=teacher_map[row[normalized_headers_t["teacher"]]],
                 subject=row[normalized_headers_t["subject"]],
                 day=row[normalized_headers_t["day"]],
-                period_number=period_number,
+                period_number=period_number_int,
                 period_id=period.id,  # ⚡ assign the foreign key here
                 class_name=row[normalized_headers_t["class_name"]]
             )
@@ -296,7 +298,10 @@ def upload():
 
         db.session.commit()
 
-        flash("Timetable Added successfully", "success")
+        if missing_periods:
+            flash(f"⚠️ Periods NOT found: {', '.join(missing_periods)}. Create these periods first!", "danger")
+        else:
+            flash("Timetable Added successfully ✅", "success")
         return redirect(url_for("dashboard"))
     return render_template("upload.html")
 @app.route("/periods", methods=["GET", "POST"])
@@ -403,9 +408,9 @@ def assign_substitute():
                 user_id=current_user.id,
                 date=today,
                 day=day,
-                period=t.period_number,
+                period=str(t.period_number),
                 class_name=t.class_name,
-                absent_teacher=Teacher.query.get(absent_id).name
+                absent_teacher=db.session.get(Teacher, absent_id).name
             ).first()
 
             if existing_sub:
@@ -435,9 +440,9 @@ def assign_substitute():
                     user_id=current_user.id,
                     date=today,
                     day=day,
-                    period=t.period_number,
+                    period=str(t.period_number),
                     class_name=t.class_name,
-                    absent_teacher=Teacher.query.get(absent_id).name,
+                    absent_teacher=db.session.get(Teacher, absent_id).name,
                     substitute_teacher="No teacher available"
                 )
                 db.session.add(sub)
@@ -469,9 +474,9 @@ def assign_substitute():
                 user_id=current_user.id,
                 date=today,
                 day=day,
-                period=t.period_number,
+                period=str(t.period_number),
                 class_name=t.class_name,
-                absent_teacher=Teacher.query.get(absent_id).name,
+                absent_teacher=db.session.get(Teacher, absent_id).name,
                 substitute_teacher=substitute.name
             )
             db.session.add(sub)
