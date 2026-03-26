@@ -348,93 +348,81 @@ def assign_substitute():
     today = date.today()
     day = today.strftime("%A")
     all_teachers = Teacher.query.filter_by(user_id=current_user.id).all()
+    
     # Reset workload if new day
     for teacher in all_teachers:
         if teacher.workload_date != today:
             teacher.daily_workload = 0
             teacher.workload_date = today
-    today = date.today()
-    day = today.strftime("%A")
-    Substitution.query.filter_by(
-    user_id=current_user.id,
-    date=today
-    ).delete()
-
+    
     db.session.commit()
-
+    
+    # Delete old substitutions and get fresh data
+    Substitution.query.filter_by(
+        user_id=current_user.id,
+        date=today
+    ).delete()
+    db.session.commit()
+    
+    day = today.strftime("%A")
+    
     # Get absent teachers
     absences = Absence.query.filter_by(
         date=today,
         user_id=current_user.id
     ).all()
-
+    
     absent_teacher_ids = [a.teacher_id for a in absences]
-
+    
     if not absent_teacher_ids:
         flash("No absent teachers today", "warning")
         return redirect(url_for("absent_today"))
-
+    
+    # Recalculate workload from scratch
     all_teachers = Teacher.query.filter_by(user_id=current_user.id).all()
-    used_teachers = set()
-    # Calculate workload (how many periods each teacher already has today)
     teacher_load = {t.id: 0 for t in all_teachers}
     temp_workload = {t.id: 0 for t in all_teachers}
-
+    
+    # Count current timetable assignments
     today_periods = Timetable.query.filter_by(
         user_id=current_user.id,
         day=day
     ).all()
-
+    
     for t in today_periods:
         if t.teacher_id in teacher_load:
             teacher_load[t.teacher_id] += 1
-
+    
     results = []
-    already_assigned_flag = False
-
+    
     # Loop each absent teacher
     for absent_id in absent_teacher_ids:
-
         timetables = Timetable.query.filter_by(
             teacher_id=absent_id,
             day=day,
             user_id=current_user.id
         ).all()
-
+        
         for t in timetables:
-
-            # ✅ Check if already assigned
-            existing_sub = Substitution.query.filter_by(
-                user_id=current_user.id,
-                date=today,
-                day=day,
-                period=str(t.period_number),
-                class_name=t.class_name,
-                absent_teacher=db.session.get(Teacher, absent_id).name
-            ).first()
-
-            if existing_sub:
-                already_assigned_flag = True
-                continue
-
+            # Get available teachers (exclude absent teachers)
             available_teachers = [
-            teacher for teacher in all_teachers
-            if teacher.id not in absent_teacher_ids  # only block absent teachers
-        ]
-
-            # Step 2: remove teachers already teaching at THIS period
+                teacher for teacher in all_teachers
+                if teacher.id not in absent_teacher_ids
+            ]
+            
+            # Remove teachers already teaching at THIS period
             busy_teacher_ids = [
                 row.teacher_id
                 for row in today_periods
                 if row.period_number == t.period_number
             ]
-
+            
             available_teachers = [
                 teacher for teacher in available_teachers
                 if teacher.id not in busy_teacher_ids
             ]
-
-            # Step 3: if no one available
+            
+            # If no one available
             if not available_teachers:
                 sub = Substitution(
                     user_id=current_user.id,
@@ -446,30 +434,28 @@ def assign_substitute():
                     substitute_teacher="No teacher available"
                 )
                 db.session.add(sub)
-
                 results.append({
                     "class": t.class_name,
                     "period": t.period_number,
                     "substitute": "No teacher available",
-                    "absent teacher": Teacher.query.get(absent_id).name
+                    "absent_teacher": db.session.get(Teacher, absent_id).name
                 })
                 continue
-
+            
+            # Sort by workload (ascending)
             available_teachers.sort(
                 key=lambda x: (
                     teacher_load.get(x.id, 0) + temp_workload.get(x.id, 0),
                     x.daily_workload
                 )
-)
-
+            )
+            
+            # Assign the teacher with lowest workload
             substitute = available_teachers[0]
             substitute.daily_workload += 1
-            used_teachers.add(substitute.id)
-
-            # Step 5: update temporary workload
             temp_workload[substitute.id] += 1
-
-            # Step 6: save substitution record
+            
+            # Save substitution
             sub = Substitution(
                 user_id=current_user.id,
                 date=today,
@@ -480,21 +466,20 @@ def assign_substitute():
                 substitute_teacher=substitute.name
             )
             db.session.add(sub)
-
             results.append({
                 "class": t.class_name,
                 "period": t.period_number,
                 "substitute": substitute.name,
-                "absent teacher": db.session.get(Teacher, absent_id).name
+                "absent_teacher": db.session.get(Teacher, absent_id).name
             })
-
+    
     db.session.commit()
-
-    if already_assigned_flag:
-        flash("Already assigned ✅", "info")
+    
+    if results:
+        flash(f"Substitutes assigned successfully! {len(results)} assignments.", "success")
     else:
-        flash("Substitutes assigned successfully ✅", "success")
-
+        flash("No substitutes needed or could be assigned", "info")
+    
     return render_template(
         "absent_today.html",
         absentees=Absence.query.filter_by(date=today, user_id=current_user.id).all(),
