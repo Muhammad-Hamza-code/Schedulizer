@@ -150,8 +150,7 @@ def dashboard():
     absentees_count = Absence.query.filter_by(user_id=current_user.id, date=today).count()
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
-    # Teacher workload (number of periods assigned today)
-    # Teacher workload including substitutions
+   # Workload fairness (including substitutions)
     teacherdata = []
     absent_teacher_ids = []
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
@@ -159,33 +158,32 @@ def dashboard():
     day_name = today.strftime("%A")
 
     for teacher in teachers:
-        # Normal timetable count today
-        normal_count = Timetable.query.filter_by(
+        # Original timetable periods
+        timetable_count = Timetable.query.filter_by(
             user_id=current_user.id,
             teacher_id=teacher.id,
             day=day_name
         ).count()
-
-        # Substitutions assigned to this teacher today
-        sub_count = Substitution.query.filter_by(
+        
+        # Extra periods from substitution
+        substitution_count = Substitution.query.filter_by(
             user_id=current_user.id,
             date=today,
             substitute_teacher=teacher.name
         ).count()
-
-        total_count = normal_count + sub_count
+        
+        total_count = timetable_count + substitution_count
         teacherdata.append((teacher.name, total_count))
-
-        # Mark absent teachers
+        
+        # Check if teacher is absent today
         if Absence.query.filter_by(user_id=current_user.id, teacher_id=teacher.id, date=today).first():
             absent_teacher_ids.append(teacher.name)
 
-    # Workload fairness (simple formula: % of max-min)
+    # Fairness score calculation
     counts = [v for _, v in teacherdata]
     if counts:
         max_count = max(counts)
         min_count = min(counts)
-        # Avoid division by zero & consider single-teacher case
         fairness_score = int(100 * (1 - (max_count - min_count) / max_count)) if max_count else 100
     else:
         fairness_score = 100
