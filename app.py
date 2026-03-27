@@ -69,141 +69,73 @@ def register():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    now = datetime.utcnow() + timedelta(hours=5)  # Pakistan time
+    now = datetime.now()
+    today = datetime.now()
 
-    today = now.date()
-    current_time = now.time()
-    day = now.strftime("%A")
-
-    # ---- Fetch data ----
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
+    timetable = Timetable.query.filter_by(user_id=current_user.id, day=today.strftime("%A")).all()
+    absentees = Absence.query.filter_by(user_id=current_user.id, date=today).all()
+    substitutions = Substitution.query.filter_by(user_id=current_user.id, date=today).all()
 
-    timetable = Timetable.query.filter_by(
-        user_id=current_user.id,
-        day=day
-    ).all()
-
-    absentees = Absence.query.filter_by(
-        user_id=current_user.id,
-        date=today
-    ).all()
-
-    substitutions = Substitution.query.filter_by(
-        user_id=current_user.id,
-        date=today
-    ).all()
-
-    # ---- Analytics ----
     total_teachers = len(teachers)
     absentees_count = len(absentees)
     substitutions_count = len(substitutions)
     total_classes = len(set([t.class_name for t in timetable]))
 
-    # ---- FIND CURRENT PERIOD ----
     current_period = None
+    now_dt = datetime.utcnow() + timedelta(hours=5)
+    today_dt = now_dt.date()
     for p in periods:
-        if p.start_time <= current_time < p.end_time:
+        period_start = datetime.combine(today_dt, p.start_time)
+        period_end = datetime.combine(today_dt, p.end_time)
+        if period_start <= now_dt <= period_end:
             current_period = p
             break
 
-    # ---- CURRENT PERIOD CLASSES ----
     current_classes = []
-
     if current_period:
-        current_period_number = current_period.id
-
         for t in timetable:
-            if str(t.period_number) == current_period.name.replace("Period ", ""):
-
-                # check substitution
-                sub = Substitution.query.filter_by(
-                    user_id=current_user.id,
-                    date=today,
-                    period=str(t.period_number),
-                    class_name=t.class_name
-                ).first()
-
-                teacher_name = t.teacher.name
-                status = "Normal"
-                absent_teacher = None
-
-                # check if teacher absent
-                is_absent = any(a.teacher_id == t.teacher_id for a in absentees)
-
-                if is_absent:
-                    status = "Absent"
-
-                if sub:
-                    status = "Substituted"
-                    absent_teacher = sub.absent_teacher
-                    teacher_name = sub.substitute_teacher
-
-                current_classes.append({
-                    "class_name": t.class_name,
-                    "subject": t.subject,
-                    "teacher": teacher_name,
-                    "status": status,
-                    "absent_teacher": absent_teacher
-                })
-    else:
-        current_period_number = None
-
-    # ---- TODAY'S PERIOD COUNT ----
-    today_periods = Timetable.query.filter_by(
-        user_id=current_user.id,
-        day=day
-    ).all()
-
-    # ---- WORKLOAD (INCLUDING SUBSTITUTIONS) ----
-    # Get list of absent teacher names
-    absent_teacher_ids = [a.teacher_id for a in absentees]
-    
-    workload = {}
-
-# Initialize ALL present teachers with 0
-    for teacher in teachers:
-        if teacher.id not in absent_teacher_ids:
-            workload[teacher.name] = 0
-
-    # Count timetable periods
-    for t in today_periods:
-        if t.teacher_id not in absent_teacher_ids:
             teacher_name = t.teacher.name
-            workload[teacher_name] += 1
+            status = "Normal"
+            absent_teacher = None
+            if any(a.teacher_id == t.teacher_id for a in absentees):
+                status = "Absent"
+            sub = Substitution.query.filter_by(
+                user_id=current_user.id,
+                date=today,
+                period=str(t.period_number),
+                class_name=t.class_name
+            ).first()
+            if sub:
+                status = "Substituted"
+                absent_teacher = sub.absent_teacher
+                teacher_name = sub.substitute_teacher
+            current_classes.append({
+                "class_name": t.class_name,
+                "subject": t.subject,
+                "teacher": teacher_name,
+                "status": status,
+                "absent_teacher": absent_teacher
+            })
 
-    # Add substitutions
+    # Workload and fairness
+    absent_teacher_ids = [a.teacher_id for a in absentees]
+    workload = {t.name: 0 for t in teachers if t.id not in absent_teacher_ids}
+    for t in timetable:
+        if t.teacher_id not in absent_teacher_ids:
+            workload[t.teacher.name] += 1
     for sub in substitutions:
-        teacher = Teacher.query.filter_by(
-            name=sub.substitute_teacher,
-            user_id=current_user.id
-        ).first()
-
-        if teacher and teacher.id not in absent_teacher_ids:
+        if sub.substitute_teacher in workload:
             workload[sub.substitute_teacher] += 1
-
-    # ---- CHART DATA ----
     teacher_labels = list(workload.keys())
     teacher_values = list(workload.values())
-    teacherdata = list(zip(teacher_labels, teacher_values))
-
-    # ---- FAIRNESS CALCULATION (EXCLUDING ABSENT TEACHERS) ----
     values = list(workload.values())
-
-    if values and len(values) > 1:
-        avg = sum(values) / len(values)
-        variance = statistics.pvariance(values)
-
-        # fairness score (simple normalized metric)
-        fairness_score = max(0, 100 - (variance * 10))
-        fairness_score = round(fairness_score, 2)
-    else:
-        fairness_score = 100
+    fairness_score = round(max(0, 100 - (statistics.pvariance(values) * 10)) if len(values) > 1 else 100, 2)
 
     return render_template(
         "dashboard.html",
-        current_period=current_period_number,
-        current_period_obj=current_period,
+        current_period=current_period,
         current_classes=current_classes,
         total_teachers=total_teachers,
         absentees_count=absentees_count,
@@ -211,9 +143,7 @@ def dashboard():
         total_classes=total_classes,
         teacher_labels=teacher_labels,
         teacher_values=teacher_values,
-        fairness_score=fairness_score,
-        teacherdata=teacherdata,
-        absent_teacher_ids=absent_teacher_ids
+        fairness_score=fairness_score
     )
 def validate_csv(file, expected_columns):
     """Validate CSV columns"""

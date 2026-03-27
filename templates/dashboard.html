@@ -1,145 +1,94 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
 
-    <!-- HEADER -->
-    <div class="text-center mb-4">
-        <h2>📊 Dashboard</h2>
-        <p id="datetime" class="text-muted"></p>
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white shadow p-4 rounded-lg">
+            <p class="text-gray-500">Total Teachers</p>
+            <p class="text-xl font-semibold">{{ total_teachers }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded-lg">
+            <p class="text-gray-500">Absentees Today</p>
+            <p class="text-xl font-semibold">{{ absentees_count }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded-lg">
+            <p class="text-gray-500">Substitutions Today</p>
+            <p class="text-xl font-semibold">{{ substitutions_count }}</p>
+        </div>
+        <div class="bg-white shadow p-4 rounded-lg">
+            <p class="text-gray-500">Total Classes Today</p>
+            <p class="text-xl font-semibold">{{ total_classes }}</p>
+        </div>
     </div>
 
-    <!-- ANALYTICS -->
-    <div class="row text-center mb-4 g-3">
-
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
-                <h6>Total Teachers</h6>
-                <h3>{{ total_teachers }}</h3>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
-                <h6>Absentees Today</h6>
-                <h3>{{ absentees_count }}</h3>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
-                <h6>Substitutions</h6>
-                <h3>{{ substitutions_count }}</h3>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
-                <h6>Total Classes</h6>
-                <h3>{{ total_classes }}</h3>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- CURRENT PERIOD -->
-    <div class="card p-4 shadow-sm mb-4">
-        <h4>⏱ Current Period</h4>
-
-        {% if current_period_obj %}
-        <p><strong>Period:</strong> {{ current_period_obj.name }}</p>
-        <p>
-            <strong>Time:</strong>
-            {{ current_period_obj.start_time.strftime('%H:%M') }} -
-            {{ current_period_obj.end_time.strftime('%H:%M') }}
-        </p>
-
-        <p><strong>Time Remaining:</strong> <span id="countdown"></span></p>
-
-        {% else %}
-        <p class="text-danger">❌ No period right now</p>
-        {% endif %}
-    </div>
-
-    <!-- CURRENT CLASSES -->
-    <div class="card p-4 shadow-sm mb-4">
-        <h4>📚 Classes Running Now</h4>
-
-        {% if current_classes %}
-        <div class="table-responsive">
-            <table class="table table-bordered mt-3 align-middle">
-                <thead class="table-dark">
-                    <tr>
-                        <th>Class</th>
-                        <th>Subject</th>
-                        <th>Teacher</th>
-                        <th>Status</th>
-                        <th>Absent Teacher</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {% for c in current_classes %}
-                    <tr>
-                        <td>{{ c.class_name }}</td>
-                        <td>{{ c.subject }}</td>
-                        <td>{{ c.teacher }}</td>
-                        <td>
-                            <span class="badge 
-                                {% if c.status == 'Normal' %}bg-success
-                                {% elif c.status == 'Substituted' %}bg-warning
-                                {% else %}bg-danger
-                                {% endif %}
-                            ">
-                                {{ c.status }}
-                            </span>
-                        </td>
-                        <td>{{ c.absent_teacher or '-' }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        {% else %}
-        <p class="text-muted">No classes in this period</p>
-        {% endif %}
-    </div>
-
-    <!-- WORKLOAD + FAIRNESS -->
-    <div class="card p-4 shadow-sm mb-3">
-        <h4>⚖ Workload Fairness</h4>
-
-        <div class="mb-3">
-            <h5>
-                Fairness Score:
-                <span class="badge bg-primary">{{ fairness_score }}%</span>
-            </h5>
-            <small class="text-muted">
-                Higher score means more balanced workload among teachers
-            </small>
-        </div>
-
-        <canvas id="teacherChart"></canvas>
-    </div>
-
-    <!-- TEACHER WORKLOAD CARDS -->
-    <div class="card p-4 shadow-sm mb-4">
-        <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
-        <div class="row g-2">
-            {% for label, value in teacherdata %}
-            <div class="col-6 col-md-3">
-                <div
-                    class="card p-2 text-center shadow-sm {% if label in absent_teacher_names %}bg-danger text-white{% else %}bg-light{% endif %}">
-                    <h6 class="mb-1">{{ label }}</h6>
-                    <h5 class="fw-bold">{{ value }}</h5>
+    <!-- Current Period -->
+    {% if current_period %}
+    <div class="mb-6 bg-blue-50 p-4 rounded-lg">
+        <h2 class="font-semibold mb-2">Current Period: {{ current_period.name }}</h2>
+        <ul>
+            {% for cls in current_classes %}
+            <li class="flex justify-between p-2 border-b last:border-b-0">
+                <div>
+                    <span class="font-semibold">{{ cls.class_name }}</span> - {{ cls.subject }}
                 </div>
-            </div>
+                <div>
+                    <span
+                        class="{% if cls.status == 'Absent' %}text-red-600{% elif cls.status == 'Substituted' %}text-yellow-600{% else %}text-green-600{% endif %}">
+                        {{ cls.status }}
+                    </span>
+                    {% if cls.absent_teacher %}
+                    <small>({{ cls.absent_teacher }} substituted)</small>
+                    {% endif %}
+                </div>
+            </li>
             {% endfor %}
-        </div>
+        </ul>
+    </div>
+    {% else %}
+    <p class="text-gray-500 mb-6">No ongoing period right now.</p>
+    {% endif %}
+
+    <!-- Teacher Workload Chart -->
+    <div class="mb-6 bg-white p-4 rounded-lg shadow">
+        <h2 class="font-semibold mb-2">Teacher Workload</h2>
+        <canvas id="workloadChart" class="w-full h-64"></canvas>
     </div>
 
-</div>
-</div>
+    <!-- Fairness Score -->
+    <div class="mb-6 bg-white p-4 rounded-lg shadow">
+        <h2 class="font-semibold mb-2">Fairness Score</h2>
+        <p class="text-xl">{{ fairness_score }} / 100</p>
+    </div>
 </div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('workloadChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ teacher_labels| tojson }},
+        datasets: [{
+            label: 'Classes Assigned',
+            data: {{ teacher_values| tojson }},
+        backgroundColor: 'rgba(54, 162, 235, 0.7)',
+        borderColor: 'rgba(54, 162, 235, 1)',
+        borderWidth: 1
+        }]
+    },
+        options: {
+        responsive: true,
+        plugins: {
+            legend: { display: false }
+        },
+        scales: {
+            y: { beginAtZero: true, precision: 0 }
+        }
+    }
+});
+</script>
 {% endblock %}
