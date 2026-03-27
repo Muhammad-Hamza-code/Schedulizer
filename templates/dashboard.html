@@ -1,49 +1,44 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="container mt-4">
 
-    <!-- HEADER -->
     <div class="text-center mb-4">
         <h2>📊 Dashboard</h2>
         <p id="datetime" class="text-muted"></p>
     </div>
 
-    <!-- ANALYTICS -->
     <div class="row text-center mb-4 g-3">
         <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
+            <div class="card p-3 shadow-sm hover-shadow">
                 <h6>Total Teachers</h6>
                 <h3>{{ total_teachers }}</h3>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
+            <div class="card p-3 shadow-sm hover-shadow">
                 <h6>Absentees Today</h6>
                 <h3>{{ absentees_count }}</h3>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
+            <div class="card p-3 shadow-sm hover-shadow">
                 <h6>Substitutions</h6>
                 <h3>{{ substitutions_count }}</h3>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="card p-3 shadow-sm">
+            <div class="card p-3 shadow-sm hover-shadow">
                 <h6>Total Classes</h6>
                 <h3>{{ total_classes }}</h3>
             </div>
         </div>
     </div>
 
-    <!-- CURRENT PERIOD -->
     <div class="card p-4 shadow-sm mb-4">
         <h4>⏱ Current Period</h4>
         <p id="current-period-info">Loading...</p>
     </div>
 
-    <!-- CURRENT CLASSES -->
     <div class="card p-4 shadow-sm mb-4">
         <h4>📚 Classes Running Now</h4>
         <div class="table-responsive">
@@ -66,29 +61,22 @@
         </div>
     </div>
 
-    <!-- WORKLOAD + FAIRNESS -->
     <div class="card p-4 shadow-sm mb-3">
         <h4>⚖ Workload Fairness</h4>
         <div class="mb-3">
-            <h5>
-                Fairness Score:
-                <span class="badge bg-primary">{{ fairness_score }}%</span>
-            </h5>
-            <small class="text-muted">
-                Higher score = more balanced workload
-            </small>
+            <h5>Fairness Score: <span class="badge bg-primary">{{ fairness_score }}%</span></h5>
+            <small class="text-muted">Higher score = more balanced workload</small>
         </div>
         <canvas id="teacherChart"></canvas>
     </div>
 
-    <!-- TEACHER WORKLOAD CARDS -->
     <div class="card p-4 shadow-sm mb-4">
         <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
         <div class="row g-2">
             {% for label, value in teacherdata %}
             <div class="col-6 col-md-3">
-                <div class="card p-2 text-center shadow-sm
-                    {% if label in absent_teacher_ids %}bg-danger text-white{% else %}bg-light{% endif %}">
+                <div class="card p-2 text-center shadow-sm hover-shadow
+          {% if label in absent_teacher_ids %}bg-danger text-white{% else %}bg-light{% endif %}">
                     <h6 class="mb-1">{{ label }}</h6>
                     <h5 class="fw-bold">{{ value }}</h5>
                 </div>
@@ -96,11 +84,9 @@
             {% endfor %}
         </div>
     </div>
-
 </div>
 
 <script>
-    // Clock updater
     function updateClock() {
         const now = new Date();
         document.getElementById('datetime').innerText = now.toLocaleString('en-US', { hour12: false });
@@ -108,53 +94,34 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Real-time AJAX update for current period/classes
     async function updateCurrentPeriod() {
         try {
-            const response = await fetch('{{ url_for("current_period_api") }}');
-            const data = await response.json();
-
-            // Update current period info
+            const res = await fetch('{{ url_for("current_period_api") }}');
+            const data = await res.json();
             const periodInfo = document.getElementById('current-period-info');
             if (data.current_period) {
                 periodInfo.innerHTML = `
-                <p><strong>Period:</strong> ${data.current_period.name}</p>
-                <p><strong>Time:</strong> ${data.current_period.start_time} - ${data.current_period.end_time}</p>
-                <p><strong>Time Remaining:</strong> <span>${data.time_remaining}</span></p>
-            `;
-            } else {
-                periodInfo.innerHTML = '<p class="text-danger">❌ No period right now</p>';
-            }
+        <p><strong>Period:</strong> ${data.current_period.name}</p>
+        <p><strong>Time:</strong> ${data.current_period.start_time} - ${data.current_period.end_time}</p>
+        <p><strong>Time Remaining:</strong> <span>${data.current_period.time_remaining}</span></p>`;
+            } else { periodInfo.innerHTML = '<p class="text-danger">❌ No period right now</p>'; }
 
-            // Update classes table
             const tbody = document.querySelector('#current-classes-table tbody');
             tbody.innerHTML = '';
             if (data.current_classes.length) {
                 data.current_classes.forEach(c => {
-                    tbody.innerHTML += `
-                    <tr>
-                        <td>${c.class_name}</td>
-                        <td>${c.subject}</td>
-                        <td>${c.teacher}</td>
-                        <td>
-                            <span class="badge ${c.status_class}">${c.status}</span>
-                        </td>
-                        <td>${c.absent_teacher || '-'}</td>
-                    </tr>
-                `;
+                    tbody.innerHTML += `<tr>
+          <td>${c.class_name}</td>
+          <td>${c.subject}</td>
+          <td>${c.teacher}</td>
+          <td><span class="badge ${c.status_class}">${c.status}</span></td>
+          <td>${c.absent_teacher || '-'}</td>
+        </tr>`;
                 });
-            } else {
-                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No classes right now</td></tr>';
-            }
-
-        } catch (err) {
-            console.error(err);
-        }
+            } else { tbody.innerHTML = '<tr><td colspan="5" class="text-center">No classes right now</td></tr>'; }
+        } catch (err) { console.error(err); }
     }
-
-    // Update every 5 seconds
     setInterval(updateCurrentPeriod, 5000);
     updateCurrentPeriod();
 </script>
-
 {% endblock %}
