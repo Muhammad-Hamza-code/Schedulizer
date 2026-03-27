@@ -1,78 +1,97 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 
 {% block content %}
-<div class="container mx-auto p-4">
+<div class="container mt-4">
 
-    <!-- Fairness Score -->
-    <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="card bg-info p-4 text-white text-center animate-fadeIn">
-            <p class="text-sm">Fairness Score</p>
-            <p class="text-2xl font-bold">{{ fairness_score }} / 100</p>
-        </div>
-        <div class="card p-4 text-center animate-fadeIn delay-1">
-            <p class="text-sm text-muted">Total Teachers</p>
-            <p class="text-xl font-semibold">{{ total_teachers }}</p>
-        </div>
-        <div class="card p-4 text-center animate-fadeIn delay-2">
-            <p class="text-sm text-muted">Absentees Today</p>
-            <p class="text-xl font-semibold">{{ absentees_count }}</p>
-        </div>
-        <div class="card p-4 text-center animate-fadeIn delay-3">
-            <p class="text-sm text-muted">Substitutions Today</p>
-            <p class="text-xl font-semibold">{{ substitutions_count }}</p>
-        </div>
-        <div class="card p-4 text-center animate-fadeIn delay-4">
-            <p class="text-sm text-muted">Total Classes Today</p>
-            <p class="text-xl font-semibold">{{ total_classes }}</p>
-        </div>
+    <!-- HEADER -->
+    <div class="text-center mb-4">
+        <h2>📊 Dashboard</h2>
+        <p id="datetime" class="text-muted"></p>
     </div>
 
-    <!-- Real-time Clock -->
-    <div class="mb-6 text-center animate-fadeIn delay-5">
-        <p class="text-lg font-semibold">Today: <span id="day"></span></p>
-        <p class="text-2xl font-bold" id="clock">00:00:00</p>
-    </div>
-
-    <!-- Current Period -->
-    {% if current_period %}
-    <div class="mb-6 bg-blue-50 p-4 rounded-lg shadow animate-fadeIn delay-6">
-        <h2 class="text-lg font-semibold mb-2">Current Period: {{ current_period.name }} (Period {{
-            current_period.number }})</h2>
-        <p class="text-sm text-muted">Start: {{ current_period.start_time }} | End: {{ current_period.end_time }} | Time
-            Remaining: <span id="period-timer" class="font-semibold"></span></p>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-4">
-            {% for cls in current_classes %}
-            <div
-                class="card p-3 shadow hover:shadow-lg hover:scale-105 transition-transform duration-300 animate-fadeIn delay-{{ loop.index }}">
-                <p class="font-semibold">{{ cls.class_name }} - {{ cls.subject }}</p>
-                <p>Teacher: {{ cls.teacher_name }}</p>
-                <p>Status:
-                    <span
-                        class="{% if cls.status == 'Absent' %}text-red-600{% elif cls.status == 'Substituted' %}text-yellow-600{% else %}text-green-600{% endif %}">
-                        {{ cls.status }}
-                    </span>
-                    {% if cls.absent_teacher %}
-                    <small>({{ cls.absent_teacher }} substituted)</small>
-                    {% endif %}
-                </p>
+    <!-- ANALYTICS -->
+    <div class="row text-center mb-4 g-3">
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Total Teachers</h6>
+                <h3>{{ total_teachers }}</h3>
             </div>
-            {% endfor %}
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Absentees Today</h6>
+                <h3>{{ absentees_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Substitutions</h6>
+                <h3>{{ substitutions_count }}</h3>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3 shadow-sm">
+                <h6>Total Classes</h6>
+                <h3>{{ total_classes }}</h3>
+            </div>
         </div>
     </div>
-    {% else %}
-    <p class="text-gray-500 mb-6 text-center animate-fadeIn delay-6">No ongoing period right now.</p>
-    {% endif %}
 
-    <!-- Teacher Assignments Grid -->
-    <div class="mb-6 animate-fadeIn delay-7">
-        <h2 class="text-lg font-semibold mb-2">Teacher Assignments Today</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-            {% for teacher in teacher_assignments %}
-            <div
-                class="card p-3 shadow hover:shadow-lg hover:scale-105 transition-transform duration-300 animate-fadeIn delay-{{ loop.index }}">
-                <p class="font-semibold">{{ teacher.name }}</p>
-                <p class="text-sm text-muted">Classes: {{ teacher.class_count }}</p>
+    <!-- CURRENT PERIOD -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>⏱ Current Period</h4>
+        <p id="current-period-info">Loading...</p>
+    </div>
+
+    <!-- CURRENT CLASSES -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h4>📚 Classes Running Now</h4>
+        <div class="table-responsive">
+            <table class="table table-bordered mt-3 align-middle" id="current-classes-table">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Class</th>
+                        <th>Subject</th>
+                        <th>Teacher</th>
+                        <th>Status</th>
+                        <th>Absent Teacher</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="5" class="text-center">Loading...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- WORKLOAD + FAIRNESS -->
+    <div class="card p-4 shadow-sm mb-3">
+        <h4>⚖ Workload Fairness</h4>
+        <div class="mb-3">
+            <h5>
+                Fairness Score:
+                <span class="badge bg-primary">{{ fairness_score }}%</span>
+            </h5>
+            <small class="text-muted">
+                Higher score = more balanced workload
+            </small>
+        </div>
+        <canvas id="teacherChart"></canvas>
+    </div>
+
+    <!-- TEACHER WORKLOAD CARDS -->
+    <div class="card p-4 shadow-sm mb-4">
+        <h5 class="mb-3">👥 Teacher Workload Distribution</h5>
+        <div class="row g-2">
+            {% for label, value in teacherdata %}
+            <div class="col-6 col-md-3">
+                <div class="card p-2 text-center shadow-sm
+                    {% if label in absent_teacher_ids %}bg-danger text-white{% else %}bg-light{% endif %}">
+                    <h6 class="mb-1">{{ label }}</h6>
+                    <h5 class="fw-bold">{{ value }}</h5>
+                </div>
             </div>
             {% endfor %}
         </div>
@@ -80,79 +99,62 @@
 
 </div>
 
-<!-- JS: Clock + Countdown -->
 <script>
+    // Clock updater
     function updateClock() {
         const now = new Date();
-        const time = now.toLocaleTimeString('en-US', { hour12: false });
-        const day = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
-        document.getElementById('clock').textContent = time;
-        document.getElementById('day').textContent = day;
+        document.getElementById('datetime').innerText = now.toLocaleString('en-US', { hour12: false });
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    {% if current_period %}
-    function updatePeriodTimer() {
-        const end = new Date("{{ current_period.end_time }}");
-        const now = new Date();
-        let diff = (end - now) / 1000; // seconds
-        if (diff < 0) diff = 0;
-        const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
-        const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
-        const secs = String(Math.floor(diff % 60)).padStart(2, '0');
-        document.getElementById('period-timer').textContent = `${hrs}:${mins}:${secs}`;
+    // Real-time AJAX update for current period/classes
+    async function updateCurrentPeriod() {
+        try {
+            const response = await fetch('{{ url_for("current_period_api") }}');
+            const data = await response.json();
+
+            // Update current period info
+            const periodInfo = document.getElementById('current-period-info');
+            if (data.current_period) {
+                periodInfo.innerHTML = `
+                <p><strong>Period:</strong> ${data.current_period.name}</p>
+                <p><strong>Time:</strong> ${data.current_period.start_time} - ${data.current_period.end_time}</p>
+                <p><strong>Time Remaining:</strong> <span>${data.time_remaining}</span></p>
+            `;
+            } else {
+                periodInfo.innerHTML = '<p class="text-danger">❌ No period right now</p>';
+            }
+
+            // Update classes table
+            const tbody = document.querySelector('#current-classes-table tbody');
+            tbody.innerHTML = '';
+            if (data.current_classes.length) {
+                data.current_classes.forEach(c => {
+                    tbody.innerHTML += `
+                    <tr>
+                        <td>${c.class_name}</td>
+                        <td>${c.subject}</td>
+                        <td>${c.teacher}</td>
+                        <td>
+                            <span class="badge ${c.status_class}">${c.status}</span>
+                        </td>
+                        <td>${c.absent_teacher || '-'}</td>
+                    </tr>
+                `;
+                });
+            } else {
+                tbody.innerHTML = '<tr><td colspan="5" class="text-center">No classes right now</td></tr>';
+            }
+
+        } catch (err) {
+            console.error(err);
+        }
     }
-    setInterval(updatePeriodTimer, 1000);
-    updatePeriodTimer();
-    {% endif %}
+
+    // Update every 5 seconds
+    setInterval(updateCurrentPeriod, 5000);
+    updateCurrentPeriod();
 </script>
-
-<style>
-    /* Entry Animations */
-    @keyframes fadeIn {
-        0% {
-            opacity: 0;
-            transform: translateY(10px);
-        }
-
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .animate-fadeIn {
-        animation: fadeIn 0.6s forwards;
-    }
-
-    .delay-1 {
-        animation-delay: 0.1s;
-    }
-
-    .delay-2 {
-        animation-delay: 0.2s;
-    }
-
-    .delay-3 {
-        animation-delay: 0.3s;
-    }
-
-    .delay-4 {
-        animation-delay: 0.4s;
-    }
-
-    .delay-5 {
-        animation-delay: 0.5s;
-    }
-
-    .delay-6 {
-        animation-delay: 0.6s;
-    }
-
-    .delay-7 {
-        animation-delay: 0.7s;
-    }
-</style>
 
 {% endblock %}
