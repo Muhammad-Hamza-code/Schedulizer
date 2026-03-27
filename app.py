@@ -105,7 +105,7 @@ def current_period_api():
     current_classes = []
     if current_period:
         for t in timetable:
-            if t.period_number == current_period.name.split()[-1]:  # match period number
+            if t.period_number == int(current_period.name.split()[-1]):  # match period number
                 status = "Normal"
                 absent_teacher = None
                 if any(a.teacher_id == t.teacher_id for a in absentees):
@@ -145,8 +145,8 @@ def current_period_api():
 def dashboard():
     # Total counts
     total_teachers = Teacher.query.filter_by(user_id=current_user.id).count()
-    total_classes = Timetable.query.filter_by(user_id=current_user.id).count()
     today = datetime.utcnow().date() + timedelta(hours=5)
+    total_classes = Timetable.query.filter_by(user_id=current_user.id, day=today.strftime("%A")).count()
     absentees_count = Absence.query.filter_by(user_id=current_user.id, date=today).count()
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
