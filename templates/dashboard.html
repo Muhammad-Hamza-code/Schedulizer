@@ -132,7 +132,6 @@
                     class="card p-2 text-center shadow-sm {% if label in absent_teacher_names %}bg-danger text-white{% else %}bg-light{% endif %}">
                     <h6 class="mb-1">{{ label }}</h6>
                     <h5 class="fw-bold">{{ value }}</h5>
-                    {% if label in absent_teacher_names %}<small class="d-block mt-1">❌ Absent</small>{% endif %}
                 </div>
             </div>
             {% endfor %}

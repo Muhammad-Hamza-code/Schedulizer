@@ -1,5 +1,5 @@
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from flask import Flask, render_template, request, redirect, url_for,flash,abort
 from flask_login import LoginManager,login_user,logout_user,login_required,current_user
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -69,9 +69,11 @@ def register():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    today = datetime.now().date()
-    current_time = datetime.now().time()
-    day = datetime.now().strftime("%A")
+    now = datetime.utcnow() + timedelta(hours=5)  # Pakistan time
+
+    today = now.date()
+    current_time = now.time()
+    day = now.strftime("%A")
 
     # ---- Fetch data ----
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
@@ -155,20 +157,23 @@ def dashboard():
 
     # ---- WORKLOAD (INCLUDING SUBSTITUTIONS) ----
     # Get list of absent teacher names
-    absent_teacher_names = [db.session.get(Teacher, a.teacher_id).name for a in absentees]
+    absent_teacher_ids = [a.teacher_id for a in absentees]
     
     workload = {}
 
     # Only include teachers who are NOT absent
     for t in today_periods:
-        teacher_name = t.teacher.name
-        # Exclude absent teachers from workload
-        if teacher_name not in absent_teacher_names:
+        if t.teacher_id not in absent_teacher_ids:
+            teacher_name = t.teacher.name
             workload[teacher_name] = workload.get(teacher_name, 0) + 1
 
-    # Include substitutions as extra load (they are not absent)
     for sub in substitutions:
-        if sub.substitute_teacher not in absent_teacher_names:
+        teacher = Teacher.query.filter_by(
+            name=sub.substitute_teacher,
+            user_id=current_user.id
+        ).first()
+
+        if teacher and teacher.id not in absent_teacher_ids:
             workload[sub.substitute_teacher] = workload.get(sub.substitute_teacher, 0) + 1
 
     # ---- CHART DATA ----
@@ -202,7 +207,7 @@ def dashboard():
         teacher_values=teacher_values,
         fairness_score=fairness_score,
         teacherdata=teacherdata,
-        absent_teacher_names=absent_teacher_names
+        absent_teacher_ids=absent_teacher_ids
     )
 def validate_csv(file, expected_columns):
     """Validate CSV columns"""
