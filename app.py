@@ -151,39 +151,54 @@ def dashboard():
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
    # 1️⃣ Gather teacher workloads
-    teacherdata = []
-    teachers = Teacher.query.filter_by(user_id=current_user.id).all()
+    # 1️⃣ Get today's info
     today = datetime.utcnow().date() + timedelta(hours=5)
     day_name = today.strftime("%A")
 
-    for teacher in teachers:
-        # Original timetable periods for today
+    # Get absent teachers
+    absent_teacher_ids = [
+        a.teacher_id for a in Absence.query.filter_by(
+            user_id=current_user.id,
+            date=today
+        ).all()
+    ]
+
+    # Get present teachers only
+    teachers = Teacher.query.filter_by(user_id=current_user.id).all()
+    present_teachers = [t for t in teachers if t.id not in absent_teacher_ids]
+
+    teacherdata = []
+
+    for teacher in present_teachers:
+        # Today's timetable periods
         timetable_count = Timetable.query.filter_by(
             user_id=current_user.id,
             teacher_id=teacher.id,
             day=day_name
         ).count()
-        
-        # Extra periods from substitution assigned to this teacher
+
+        # Today's substitutions
         substitution_count = Substitution.query.filter_by(
             user_id=current_user.id,
             date=today,
             substitute_teacher=teacher.name
         ).count()
-        
-        # Total workload
+
         total_count = timetable_count + substitution_count
         teacherdata.append((teacher.name, total_count))
-    absent_teacher_ids = [a.teacher_id for a in Absence.query.filter_by(user_id=current_user.id, date=today).all()]
 
-    # 2️⃣ Compute fairness score
-    counts = [count for _, count in teacherdata]
-    if counts:
-        max_count = max(counts)
-        min_count = min(counts)
-        fairness_score = int(100 * min_count / max_count) if max_count else 100
+
+    # 2️⃣ Better fairness calculation
+    counts = [count for _, count in teacherdata if count > 0]
+
+    if len(counts) > 1:
+        avg = sum(counts) / len(counts)
+        variance = sum((x - avg) ** 2 for x in counts) / len(counts)
+        std_dev = variance ** 0.5
+
+        fairness_score = int(max(0, 100 - (std_dev * 20)))
     else:
-        fairness_score = 100  # default if no teachers exist
+        fairness_score = 100
 
     # ✅ teacherdata and fairness_score ready for rendering
 
