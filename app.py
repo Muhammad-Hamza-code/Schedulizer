@@ -150,40 +150,42 @@ def dashboard():
     absentees_count = Absence.query.filter_by(user_id=current_user.id, date=today).count()
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
-   # Workload fairness (including substitutions)
+   # 1️⃣ Gather teacher workloads
     teacherdata = []
-    absent_teacher_ids = []
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     today = datetime.utcnow().date() + timedelta(hours=5)
     day_name = today.strftime("%A")
 
     for teacher in teachers:
-        # Original timetable periods
+        # Original timetable periods for today
         timetable_count = Timetable.query.filter_by(
             user_id=current_user.id,
             teacher_id=teacher.id,
             day=day_name
         ).count()
         
-        # Extra periods from substitution
+        # Extra periods from substitution assigned to this teacher
         substitution_count = Substitution.query.filter_by(
             user_id=current_user.id,
             date=today,
             substitute_teacher=teacher.name
         ).count()
         
+        # Total workload
         total_count = timetable_count + substitution_count
         teacherdata.append((teacher.name, total_count))
-        
-        # Check if teacher is absent today
-        if Absence.query.filter_by(user_id=current_user.id, teacher_id=teacher.id, date=today).first():
-            absent_teacher_ids.append(teacher.name)
+    absent_teacher_ids = [a.teacher_id for a in Absence.qeury.filter_by(user_id=current_user.id, date=today).all()]
 
-    # Fairness score calculation
-    counts = [v for _, v in teacherdata]
-    max_count = max(counts)
-    min_count = min(counts)
-    fairness_score = int(100 * min_count / max_count) if max_count else 100
+    # 2️⃣ Compute fairness score
+    counts = [count for _, count in teacherdata]
+    if counts:
+        max_count = max(counts)
+        min_count = min(counts)
+        fairness_score = int(100 * min_count / max_count) if max_count else 100
+    else:
+        fairness_score = 100  # default if no teachers exist
+
+    # ✅ teacherdata and fairness_score ready for rendering
 
     return render_template(
         'dashboard.html',
