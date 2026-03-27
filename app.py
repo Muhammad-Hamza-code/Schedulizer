@@ -181,12 +181,9 @@ def dashboard():
 
     # Fairness score calculation
     counts = [v for _, v in teacherdata]
-    if counts:
-        max_count = max(counts)
-        min_count = min(counts)
-        fairness_score = int(100 * (1 - (max_count - min_count) / max_count)) if max_count else 100
-    else:
-        fairness_score = 100
+    max_count = max(counts)
+    min_count = min(counts)
+    fairness_score = int(100 * min_count / max_count) if max_count else 100
 
     return render_template(
         'dashboard.html',
