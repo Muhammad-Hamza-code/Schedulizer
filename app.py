@@ -174,7 +174,7 @@ def dashboard():
         # Total workload
         total_count = timetable_count + substitution_count
         teacherdata.append((teacher.name, total_count))
-    absent_teacher_ids = [a.teacher_id for a in Absence.qeury.filter_by(user_id=current_user.id, date=today).all()]
+    absent_teacher_ids = [a.teacher_id for a in Absence.query.filter_by(user_id=current_user.id, date=today).all()]
 
     # 2️⃣ Compute fairness score
     counts = [count for _, count in teacherdata]
