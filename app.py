@@ -151,19 +151,32 @@ def dashboard():
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
     # Teacher workload (number of periods assigned today)
+    # Teacher workload including substitutions
     teacherdata = []
     absent_teacher_ids = []
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
+    today = datetime.utcnow().date() + timedelta(hours=5)
+    day_name = today.strftime("%A")
+
     for teacher in teachers:
-        today = datetime.utcnow().date() + timedelta(hours=5)
-        day_name = today.strftime("%A")
-        count = Timetable.query.filter_by(
-            user_id=current_user.id, 
-            teacher_id=teacher.id, 
+        # Normal timetable count today
+        normal_count = Timetable.query.filter_by(
+            user_id=current_user.id,
+            teacher_id=teacher.id,
             day=day_name
         ).count()
-        teacherdata.append((teacher.name, count))
-        # check if teacher is absent today
+
+        # Substitutions assigned to this teacher today
+        sub_count = Substitution.query.filter_by(
+            user_id=current_user.id,
+            date=today,
+            substitute_teacher=teacher.name
+        ).count()
+
+        total_count = normal_count + sub_count
+        teacherdata.append((teacher.name, total_count))
+
+        # Mark absent teachers
         if Absence.query.filter_by(user_id=current_user.id, teacher_id=teacher.id, date=today).first():
             absent_teacher_ids.append(teacher.name)
 
