@@ -1,5 +1,6 @@
 from collections import defaultdict
 from datetime import date, datetime, timedelta
+from re import sub
 from flask import Flask, render_template, request, redirect, url_for,flash,abort,jsonify
 from flask_login import LoginManager,login_user,logout_user,login_required,current_user
 from werkzeug.security import generate_password_hash,check_password_hash
@@ -108,19 +109,21 @@ def current_period_api():
             if t.period_number == int(current_period.name.split()[-1]):  # match period number
                 status = "Normal"
                 absent_teacher = None
-                if any(a.teacher_id == t.teacher_id for a in absentees):
-                    status = "Absent"
-                sub = Substitution.query.filter_by(
-                    user_id=current_user.id,
-                    date=today,
-                    period=str(t.period_number),
-                    class_name=t.class_name
+                sub = Substitution.query.filter(
+                    Substitution.user_id == current_user.id,
+                    Substitution.date == today,
+                    Substitution.period == str(t.period_number)
                 ).first()
+
                 if sub:
                     status = "Substituted"
                     absent_teacher = sub.absent_teacher
                     teacher_name = sub.substitute_teacher
+                elif any(a.teacher_id == t.teacher_id for a in absentees):
+                    status = "Absent"
+                    teacher_name = t.teacher.name
                 else:
+                    status = "Normal"
                     teacher_name = t.teacher.name
                 status_class = {
                     "Normal": "bg-success text-white",
