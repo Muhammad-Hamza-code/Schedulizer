@@ -114,7 +114,7 @@ def dashboard():
         current_period_number = current_period.id
 
         for t in timetable:
-            if t.period_id == current_period.id:
+            if str(t.period_number) == current_period.name.replace("Period ", ""):
 
                 # check substitution
                 sub = Substitution.query.filter_by(
@@ -161,12 +161,18 @@ def dashboard():
     
     workload = {}
 
-    # Only include teachers who are NOT absent
+# Initialize ALL present teachers with 0
+    for teacher in teachers:
+        if teacher.id not in absent_teacher_ids:
+            workload[teacher.name] = 0
+
+    # Count timetable periods
     for t in today_periods:
         if t.teacher_id not in absent_teacher_ids:
             teacher_name = t.teacher.name
-            workload[teacher_name] = workload.get(teacher_name, 0) + 1
+            workload[teacher_name] += 1
 
+    # Add substitutions
     for sub in substitutions:
         teacher = Teacher.query.filter_by(
             name=sub.substitute_teacher,
@@ -174,7 +180,7 @@ def dashboard():
         ).first()
 
         if teacher and teacher.id not in absent_teacher_ids:
-            workload[sub.substitute_teacher] = workload.get(sub.substitute_teacher, 0) + 1
+            workload[sub.substitute_teacher] += 1
 
     # ---- CHART DATA ----
     teacher_labels = list(workload.keys())
