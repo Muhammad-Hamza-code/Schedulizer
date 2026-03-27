@@ -146,7 +146,7 @@ def dashboard():
     # Total counts
     total_teachers = Teacher.query.filter_by(user_id=current_user.id).count()
     today = datetime.utcnow().date() + timedelta(hours=5)
-    total_classes = Timetable.query.filter_by(user_id=current_user.id, day=today.strftime("%A")).count()
+    total_classes = Timetable.query.filter_by(user_id=current_user.id).distinct(Timetable.class_name).count()
     absentees_count = Absence.query.filter_by(user_id=current_user.id, date=today).count()
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
@@ -168,8 +168,14 @@ def dashboard():
             absent_teacher_ids.append(teacher.name)
 
     # Workload fairness (simple formula: % of max-min)
-    counts = [v for _, v in teacherdata] or [1]
-    fairness_score = int(100 * (min(counts) / max(counts))) if max(counts) != 0 else 100
+    counts = [v for _, v in teacherdata]
+    if counts:
+        max_count = max(counts)
+        min_count = min(counts)
+        # Avoid division by zero & consider single-teacher case
+        fairness_score = int(100 * (1 - (max_count - min_count) / max_count)) if max_count else 100
+    else:
+        fairness_score = 100
 
     return render_template(
         'dashboard.html',
