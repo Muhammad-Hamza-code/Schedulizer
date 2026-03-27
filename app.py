@@ -101,7 +101,7 @@ def dashboard():
     # ---- FIND CURRENT PERIOD ----
     current_period = None
     for p in periods:
-        if p.start_time <= current_time <= p.end_time:
+        if p.start_time <= current_time < p.end_time:
             current_period = p
             break
 
