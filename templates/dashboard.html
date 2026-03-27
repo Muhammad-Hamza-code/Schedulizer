@@ -2,39 +2,51 @@
 
 {% block content %}
 <div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Dashboard</h1>
 
-    <!-- Stats Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-        <div class="bg-white shadow p-4 rounded-lg">
-            <p class="text-gray-500">Total Teachers</p>
+    <!-- Fairness Score -->
+    <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="card bg-info p-4 text-white text-center">
+            <p class="text-sm">Fairness Score</p>
+            <p class="text-2xl font-bold">{{ fairness_score }} / 100</p>
+        </div>
+        <div class="card p-4 text-center">
+            <p class="text-sm text-muted">Total Teachers</p>
             <p class="text-xl font-semibold">{{ total_teachers }}</p>
         </div>
-        <div class="bg-white shadow p-4 rounded-lg">
-            <p class="text-gray-500">Absentees Today</p>
+        <div class="card p-4 text-center">
+            <p class="text-sm text-muted">Absentees Today</p>
             <p class="text-xl font-semibold">{{ absentees_count }}</p>
         </div>
-        <div class="bg-white shadow p-4 rounded-lg">
-            <p class="text-gray-500">Substitutions Today</p>
+        <div class="card p-4 text-center">
+            <p class="text-sm text-muted">Substitutions Today</p>
             <p class="text-xl font-semibold">{{ substitutions_count }}</p>
         </div>
-        <div class="bg-white shadow p-4 rounded-lg">
-            <p class="text-gray-500">Total Classes Today</p>
+        <div class="card p-4 text-center">
+            <p class="text-sm text-muted">Total Classes Today</p>
             <p class="text-xl font-semibold">{{ total_classes }}</p>
         </div>
     </div>
 
+    <!-- Real-time Clock -->
+    <div class="mb-6 text-center">
+        <p class="text-lg font-semibold">Today: <span id="day"></span></p>
+        <p class="text-2xl font-bold" id="clock">00:00:00</p>
+    </div>
+
     <!-- Current Period -->
     {% if current_period %}
-    <div class="mb-6 bg-blue-50 p-4 rounded-lg">
-        <h2 class="font-semibold mb-2">Current Period: {{ current_period.name }}</h2>
-        <ul>
+    <div class="mb-6 bg-blue-50 p-4 rounded-lg shadow">
+        <h2 class="text-lg font-semibold mb-2">Current Period: {{ current_period.name }} (Period {{
+            current_period.number }})</h2>
+        <p class="text-sm text-muted">Start: {{ current_period.start_time }} | End: {{ current_period.end_time }} | Time
+            Remaining: <span id="period-timer">--:--:--</span></p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-4">
             {% for cls in current_classes %}
-            <li class="flex justify-between p-2 border-b last:border-b-0">
-                <div>
-                    <span class="font-semibold">{{ cls.class_name }}</span> - {{ cls.subject }}
-                </div>
-                <div>
+            <div class="card p-3 shadow hover:shadow-md">
+                <p class="font-semibold">{{ cls.class_name }} - {{ cls.subject }}</p>
+                <p>Teacher: {{ cls.teacher_name }}</p>
+                <p>Status:
                     <span
                         class="{% if cls.status == 'Absent' %}text-red-600{% elif cls.status == 'Substituted' %}text-yellow-600{% else %}text-green-600{% endif %}">
                         {{ cls.status }}
@@ -42,53 +54,56 @@
                     {% if cls.absent_teacher %}
                     <small>({{ cls.absent_teacher }} substituted)</small>
                     {% endif %}
-                </div>
-            </li>
+                </p>
+            </div>
             {% endfor %}
-        </ul>
+        </div>
     </div>
     {% else %}
-    <p class="text-gray-500 mb-6">No ongoing period right now.</p>
+    <p class="text-gray-500 mb-6 text-center">No ongoing period right now.</p>
     {% endif %}
 
-    <!-- Teacher Workload Chart -->
-    <div class="mb-6 bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold mb-2">Teacher Workload</h2>
-        <canvas id="workloadChart" class="w-full h-64"></canvas>
+    <!-- Optional: Teacher Assignments Grid -->
+    <div class="mb-6">
+        <h2 class="text-lg font-semibold mb-2">Teacher Assignments Today</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+            {% for teacher in teacher_assignments %}
+            <div class="card p-3 shadow hover:shadow-md">
+                <p class="font-semibold">{{ teacher.name }}</p>
+                <p class="text-sm text-muted">Classes: {{ teacher.class_count }}</p>
+            </div>
+            {% endfor %}
+        </div>
     </div>
 
-    <!-- Fairness Score -->
-    <div class="mb-6 bg-white p-4 rounded-lg shadow">
-        <h2 class="font-semibold mb-2">Fairness Score</h2>
-        <p class="text-xl">{{ fairness_score }} / 100</p>
-    </div>
 </div>
 
-<!-- Chart.js -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('workloadChart').getContext('2d');
-    new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {{ teacher_labels| tojson }},
-        datasets: [{
-            label: 'Classes Assigned',
-            data: {{ teacher_values| tojson }},
-        backgroundColor: 'rgba(54, 162, 235, 0.7)',
-        borderColor: 'rgba(54, 162, 235, 1)',
-        borderWidth: 1
-        }]
-    },
-        options: {
-        responsive: true,
-        plugins: {
-            legend: { display: false }
-        },
-        scales: {
-            y: { beginAtZero: true, precision: 0 }
-        }
+    // Real-time clock
+    function updateClock() {
+        const now = new Date();
+        const time = now.toLocaleTimeString('en-US', { hour12: false });
+        const day = now.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
+        document.getElementById('clock').textContent = time;
+        document.getElementById('day').textContent = day;
     }
-});
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Period countdown timer
+    {% if current_period %}
+    function updatePeriodTimer() {
+        const end = new Date("{{ current_period.end_time }}");
+        const now = new Date();
+        let diff = (end - now) / 1000; // seconds
+        if (diff < 0) diff = 0;
+        const hrs = String(Math.floor(diff / 3600)).padStart(2, '0');
+        const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
+        const secs = String(Math.floor(diff % 60)).padStart(2, '0');
+        document.getElementById('period-timer').textContent = `${hrs}:${mins}:${secs}`;
+    }
+    setInterval(updatePeriodTimer, 1000);
+    updatePeriodTimer();
+    {% endif %}
 </script>
 {% endblock %}
