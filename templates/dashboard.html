@@ -5,45 +5,46 @@
 
     <!-- Fairness Score -->
     <div class="mb-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="card bg-info p-4 text-white text-center">
+        <div class="card bg-info p-4 text-white text-center animate-fadeIn">
             <p class="text-sm">Fairness Score</p>
             <p class="text-2xl font-bold">{{ fairness_score }} / 100</p>
         </div>
-        <div class="card p-4 text-center">
+        <div class="card p-4 text-center animate-fadeIn delay-1">
             <p class="text-sm text-muted">Total Teachers</p>
             <p class="text-xl font-semibold">{{ total_teachers }}</p>
         </div>
-        <div class="card p-4 text-center">
+        <div class="card p-4 text-center animate-fadeIn delay-2">
             <p class="text-sm text-muted">Absentees Today</p>
             <p class="text-xl font-semibold">{{ absentees_count }}</p>
         </div>
-        <div class="card p-4 text-center">
+        <div class="card p-4 text-center animate-fadeIn delay-3">
             <p class="text-sm text-muted">Substitutions Today</p>
             <p class="text-xl font-semibold">{{ substitutions_count }}</p>
         </div>
-        <div class="card p-4 text-center">
+        <div class="card p-4 text-center animate-fadeIn delay-4">
             <p class="text-sm text-muted">Total Classes Today</p>
             <p class="text-xl font-semibold">{{ total_classes }}</p>
         </div>
     </div>
 
     <!-- Real-time Clock -->
-    <div class="mb-6 text-center">
+    <div class="mb-6 text-center animate-fadeIn delay-5">
         <p class="text-lg font-semibold">Today: <span id="day"></span></p>
         <p class="text-2xl font-bold" id="clock">00:00:00</p>
     </div>
 
     <!-- Current Period -->
     {% if current_period %}
-    <div class="mb-6 bg-blue-50 p-4 rounded-lg shadow">
+    <div class="mb-6 bg-blue-50 p-4 rounded-lg shadow animate-fadeIn delay-6">
         <h2 class="text-lg font-semibold mb-2">Current Period: {{ current_period.name }} (Period {{
             current_period.number }})</h2>
         <p class="text-sm text-muted">Start: {{ current_period.start_time }} | End: {{ current_period.end_time }} | Time
-            Remaining: <span id="period-timer">--:--:--</span></p>
+            Remaining: <span id="period-timer" class="font-semibold"></span></p>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 mt-4">
             {% for cls in current_classes %}
-            <div class="card p-3 shadow hover:shadow-md">
+            <div
+                class="card p-3 shadow hover:shadow-lg hover:scale-105 transition-transform duration-300 animate-fadeIn delay-{{ loop.index }}">
                 <p class="font-semibold">{{ cls.class_name }} - {{ cls.subject }}</p>
                 <p>Teacher: {{ cls.teacher_name }}</p>
                 <p>Status:
@@ -60,15 +61,16 @@
         </div>
     </div>
     {% else %}
-    <p class="text-gray-500 mb-6 text-center">No ongoing period right now.</p>
+    <p class="text-gray-500 mb-6 text-center animate-fadeIn delay-6">No ongoing period right now.</p>
     {% endif %}
 
-    <!-- Optional: Teacher Assignments Grid -->
-    <div class="mb-6">
+    <!-- Teacher Assignments Grid -->
+    <div class="mb-6 animate-fadeIn delay-7">
         <h2 class="text-lg font-semibold mb-2">Teacher Assignments Today</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
             {% for teacher in teacher_assignments %}
-            <div class="card p-3 shadow hover:shadow-md">
+            <div
+                class="card p-3 shadow hover:shadow-lg hover:scale-105 transition-transform duration-300 animate-fadeIn delay-{{ loop.index }}">
                 <p class="font-semibold">{{ teacher.name }}</p>
                 <p class="text-sm text-muted">Classes: {{ teacher.class_count }}</p>
             </div>
@@ -78,8 +80,8 @@
 
 </div>
 
+<!-- JS: Clock + Countdown -->
 <script>
-    // Real-time clock
     function updateClock() {
         const now = new Date();
         const time = now.toLocaleTimeString('en-US', { hour12: false });
@@ -90,7 +92,6 @@
     setInterval(updateClock, 1000);
     updateClock();
 
-    // Period countdown timer
     {% if current_period %}
     function updatePeriodTimer() {
         const end = new Date("{{ current_period.end_time }}");
@@ -106,4 +107,52 @@
     updatePeriodTimer();
     {% endif %}
 </script>
+
+<style>
+    /* Entry Animations */
+    @keyframes fadeIn {
+        0% {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.6s forwards;
+    }
+
+    .delay-1 {
+        animation-delay: 0.1s;
+    }
+
+    .delay-2 {
+        animation-delay: 0.2s;
+    }
+
+    .delay-3 {
+        animation-delay: 0.3s;
+    }
+
+    .delay-4 {
+        animation-delay: 0.4s;
+    }
+
+    .delay-5 {
+        animation-delay: 0.5s;
+    }
+
+    .delay-6 {
+        animation-delay: 0.6s;
+    }
+
+    .delay-7 {
+        animation-delay: 0.7s;
+    }
+</style>
+
 {% endblock %}
