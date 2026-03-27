@@ -155,7 +155,13 @@ def dashboard():
     absent_teacher_ids = []
     teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     for teacher in teachers:
-        count = Timetable.query.filter_by(user_id=current_user.id, teacher_id=teacher.id).count()
+        today = datetime.utcnow().date() + timedelta(hours=5)
+        day_name = today.strftime("%A")
+        count = Timetable.query.filter_by(
+            user_id=current_user.id, 
+            teacher_id=teacher.id, 
+            day=day_name
+        ).count()
         teacherdata.append((teacher.name, count))
         # check if teacher is absent today
         if Absence.query.filter_by(user_id=current_user.id, teacher_id=teacher.id, date=today).first():
