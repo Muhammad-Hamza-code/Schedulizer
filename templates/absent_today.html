@@ -11,9 +11,6 @@
             🚀 Assign All Substitutes
         </button>
     </form>
-    <button onclick="sendAllWhatsApp()" class="btn btn-primary mb-3">
-        📢 Send All WhatsApp Messages
-    </button>
 
     <!-- Loader -->
     <div id="loader" class="text-center my-4" style="display:none;">
@@ -42,6 +39,11 @@
     <hr>
     <h3 class="mt-4">📊 Substitution Results</h3>
 
+    <!-- Send All Button -->
+    <button onclick="sendAllWhatsApp()" class="btn btn-primary mb-3">
+        📢 Send All WhatsApp Messages
+    </button>
+
     <div class="row mt-3">
         {% for result in results %}
         <div class="col-md-4 mb-3">
@@ -53,18 +55,24 @@
                 <p><strong>Substitute Teacher:</strong> {{ result.substitute_teacher }}</p>
                 <p><strong>Date:</strong> {{ result.date }}</p>
 
+                <!-- FIND PHONE -->
                 {% set phone = None %}
-                {% if result.substitute_teacher != "No teacher available" %}
                 {% for t in teachers %}
-                {% if t.name.strip() == result.substitute_teacher.strip() %}
+                {% if t.name.strip().lower() in result.substitute_teacher.strip().lower() %}
                 {% set phone = t.mobile_number %}
                 {% endif %}
                 {% endfor %}
-                {% endif %}
 
                 {% if phone %}
-                {% set phone_digits = phone | replace('+','') | replace(' ','') | replace('(','') | replace(')','') |
-                replace('-','') %}
+
+                {% set phone_digits = phone
+                | replace('+','')
+                | replace(' ','')
+                | replace('(','')
+                | replace(')','')
+                | replace('-','')
+                %}
+
                 {% set message =
                 "Hello " ~ result.substitute_teacher ~ ",%0A%0A" ~
                 "You have been assigned a substitution class.%0A%0A" ~
@@ -73,10 +81,14 @@
                 "👤 Absent Teacher: " ~ result.absent_teacher ~ "%0A%0A" ~
                 "Please be on time. Thank you!"
                 %}
+
                 <a href="https://wa.me/{{ phone_digits }}?text={{ message }}" target="_blank"
                     class="btn btn-success mt-2 whatsapp-link">
                     📲 Send WhatsApp
                 </a>
+
+                {% else %}
+                <p class="text-danger">⚠️ Phone not found for {{ result.substitute_teacher }}</p>
                 {% endif %}
 
             </div>
@@ -96,6 +108,11 @@
 
     function sendAllWhatsApp() {
         const links = document.querySelectorAll(".whatsapp-link");
+
+        if (links.length === 0) {
+            alert("No WhatsApp messages available!");
+            return;
+        }
 
         links.forEach((link, index) => {
             setTimeout(() => {
