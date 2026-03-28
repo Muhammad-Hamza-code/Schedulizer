@@ -498,11 +498,12 @@ def assign_substitute():
         flash(f"Substitutes assigned successfully! {len(results)} assignments.", "success")
     else:
         flash("No substitutes needed or could be assigned", "info")
-    
+    teachers = Teacher.query.filter_by(user_id=current_user.id).all()
     return render_template(
         "absent_today.html",
         absentees=Absence.query.filter_by(date=today, user_id=current_user.id).all(),
-        results=Substitution.query.filter_by(user_id=current_user.id, date=today).all()
+        results=Substitution.query.filter_by(user_id=current_user.id, date=today).all(),
+        teachers=teachers
     )
 
 @app.route('/teachers_page')
