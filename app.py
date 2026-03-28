@@ -562,47 +562,15 @@ def absent_today():
         user_id=current_user.id,date = today
     ).all()
 
+    teachers = Teacher.query.filter_by(user_id=current_user.id).all()
+
     return render_template(
         "absent_today.html",
         absentees=absentees,
-        results=results
+        results=results,
+        teachers=teachers
     )
-@app.route("/send_notifications")
-@login_required
-def send_notifications():
-    today = date.today()
-
-    substitutions = Substitution.query.filter_by(
-        user_id=current_user.id,
-        date=today
-    ).all()
-
-    sent = 0
-
-    for sub in substitutions:
-        # find teacher using name
-        teacher = Teacher.query.filter_by(
-            name=sub.substitute_teacher,
-            user_id=current_user.id
-        ).first()
-
-        if teacher and teacher.mobile_number:
-            message = f"""
-Hello {teacher.name},
-You have been assigned a substitute class.
-
-Class: {sub.class_name}
-Period: {sub.period}
-Date: {sub.date}
-"""
-
-            # 👉 FOR NOW (TEST ONLY)
-            print(f"SMS to {teacher.mobile_number}: {message}")
-
-            sent += 1
-
-    flash(f"✅ Messages prepared for {sent} teachers (check terminal)", "success")
-    return redirect(url_for("absent_today"))
+    
 
 @app.route("/undo_absent/<int:teacher_id>")
 @login_required

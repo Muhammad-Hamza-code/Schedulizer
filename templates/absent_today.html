@@ -11,11 +11,7 @@
             🚀 Assign All Substitutes
         </button>
     </form>
-    <form action="{{ url_for('send_notifications') }}" method="get" class="mt-2">
-        <button class="btn btn-primary">
-            📩 Send SMS to Teachers
-        </button>
-    </form>
+
 
     <!-- Loader -->
     <div id="loader" class="text-center my-4" style="display:none;">
@@ -54,6 +50,20 @@
                 <p><strong>Absent Teacher:</strong> {{ result.absent_teacher }}</p>
                 <p><strong>Substitute Teacher:</strong> {{ result.substitute_teacher }}</p>
                 <p><strong>Date:</strong> {{ result.date }}</p>
+
+                {% set phone = None %}
+                {% for t in teachers %}
+                {% if t.name == result.substitute_teacher %}
+                {% set phone = t.mobile_number %}
+                {% endif %}
+                {% endfor %}
+
+                {% if phone %}
+                <a href="https://wa.me/{{ phone }}?text=Hello%20{{ result.substitute_teacher }}%2C%20you%20have%20a%20substitution%20for%20class%20{{ result.class_name }}%20in%20period%20{{ result.period }}."
+                    target="_blank" class="btn btn-success mt-2">
+                    📲 Send WhatsApp
+                </a>
+                {% endif %}
 
             </div>
         </div>
