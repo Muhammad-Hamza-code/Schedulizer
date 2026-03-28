@@ -11,6 +11,11 @@
             🚀 Assign All Substitutes
         </button>
     </form>
+    <form action="{{ url_for('send_notifications') }}" method="get" class="mt-2">
+        <button class="btn btn-primary">
+            📩 Send SMS to Teachers
+        </button>
+    </form>
 
     <!-- Loader -->
     <div id="loader" class="text-center my-4" style="display:none;">
