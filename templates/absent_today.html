@@ -11,7 +11,9 @@
             🚀 Assign All Substitutes
         </button>
     </form>
-
+    <button onclick="sendAllWhatsApp()" class="btn btn-primary mb-3">
+        📢 Send All WhatsApp Messages
+    </button>
 
     <!-- Loader -->
     <div id="loader" class="text-center my-4" style="display:none;">
@@ -63,10 +65,16 @@
                 {% if phone %}
                 {% set phone_digits = phone | replace('+','') | replace(' ','') | replace('(','') | replace(')','') |
                 replace('-','') %}
-                {% set message = "Hello " ~ result.substitute_teacher ~ ", you have a substitution for class " ~
-                result.class_name ~ " in period " ~ result.period %}
-                <a href="https://wa.me/{{ phone_digits }}?text={{ message | urlencode }}" target="_blank"
-                    class="btn btn-success mt-2">
+                {% set message =
+                "Hello " ~ result.substitute_teacher ~ ",%0A%0A" ~
+                "You have been assigned a substitution class.%0A%0A" ~
+                "📘 Class: " ~ result.class_name ~ "%0A" ~
+                "⏰ Period: " ~ result.period ~ "%0A" ~
+                "👤 Absent Teacher: " ~ result.absent_teacher ~ "%0A%0A" ~
+                "Please be on time. Thank you!"
+                %}
+                <a href="https://wa.me/{{ phone_digits }}?text={{ message }}" target="_blank"
+                    class="btn btn-success mt-2 whatsapp-link">
                     📲 Send WhatsApp
                 </a>
                 {% endif %}
@@ -81,13 +89,19 @@
 
 <script>
     function handleAssign() {
-        // Show loader
         document.getElementById("loader").style.display = "block";
-
-        // Disable button to prevent double click
         document.getElementById("assignBtn").disabled = true;
+        return true;
+    }
 
-        return true; // allow form submission
+    function sendAllWhatsApp() {
+        const links = document.querySelectorAll(".whatsapp-link");
+
+        links.forEach((link, index) => {
+            setTimeout(() => {
+                window.open(link.href, "_blank");
+            }, index * 800);
+        });
     }
 </script>
 
