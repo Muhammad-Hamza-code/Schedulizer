@@ -59,7 +59,8 @@
                 {% endfor %}
 
                 {% if phone %}
-                <a href="https://wa.me/{{ phone }}?text=Hello%20{{ result.substitute_teacher }}%2C%20you%20have%20a%20substitution%20for%20class%20{{ result.class_name }}%20in%20period%20{{ result.period }}."
+                {% set phone_clean = phone.replace('+','').replace(' ','') %}
+                <a href="https://wa.me/{{ phone_clean }}?text=Hello%20{{ result.substitute_teacher }}%2C%20you%20have%20a%20substitution%20for%20class%20{{ result.class_name }}%20in%20period%20{{ result.period }}."
                     target="_blank" class="btn btn-success mt-2">
                     📲 Send WhatsApp
                 </a>
