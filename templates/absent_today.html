@@ -55,19 +55,17 @@
                 <p><strong>Date:</strong> {{ result.date }}</p>
 
                 <!-- FIND PHONE -->
-                {% set phone = None %}
+                {% set ns = namespace(phone=None) %}
                 {% for t in teachers %}
-                {% if phone is none %}
                 {% set t_name = t.name.strip().lower().replace('sir ', '').replace('miss ', '') %}
                 {% set r_name = result.substitute_teacher.strip().lower().replace('sir ', '').replace('miss ', '') %}
                 {% if t_name == r_name %}
-                {% set phone = t.mobile_number %}
-                {% endif %}
+                {% set ns.phone = t.mobile_number %}
                 {% endif %}
                 {% endfor %}
 
-                {% if phone %}
-                {% set phone_digits = phone
+                {% if ns.phone %}
+                {% set phone_digits = ns.phone
                 | replace('+','')
                 | replace(' ','')
                 | replace('(','')
@@ -84,6 +82,7 @@
                 "Please be on time. Thank you!"
                 %}
 
+                <p class="text-muted small">📞 {{ ns.phone }}</p>
                 <a href="https://wa.me/{{ phone_digits }}?text={{ message }}" target="_blank"
                     class="btn btn-success mt-2 whatsapp-link">
                     📲 Send WhatsApp
@@ -91,7 +90,6 @@
                 {% else %}
                 <p class="text-danger">⚠️ Phone not found for {{ result.substitute_teacher }}</p>
                 {% endif %}
-
             </div>
         </div>
         {% endfor %}
