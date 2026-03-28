@@ -52,16 +52,21 @@
                 <p><strong>Date:</strong> {{ result.date }}</p>
 
                 {% set phone = None %}
+                {% if result.substitute_teacher != "No teacher available" %}
                 {% for t in teachers %}
-                {% if t.name == result.substitute_teacher %}
+                {% if t.name.strip() == result.substitute_teacher.strip() %}
                 {% set phone = t.mobile_number %}
                 {% endif %}
                 {% endfor %}
+                {% endif %}
 
                 {% if phone %}
-                {% set phone_clean = phone.replace('+','').replace(' ','') %}
-                <a href="https://wa.me/{{ phone_clean }}?text=Hello%20{{ result.substitute_teacher }}%2C%20you%20have%20a%20substitution%20for%20class%20{{ result.class_name }}%20in%20period%20{{ result.period }}."
-                    target="_blank" class="btn btn-success mt-2">
+                {% set phone_digits = phone | replace('+','') | replace(' ','') | replace('(','') | replace(')','') |
+                replace('-','') %}
+                {% set message = "Hello " ~ result.substitute_teacher ~ ", you have a substitution for class " ~
+                result.class_name ~ " in period " ~ result.period %}
+                <a href="https://wa.me/{{ phone_digits }}?text={{ message | urlencode }}" target="_blank"
+                    class="btn btn-success mt-2">
                     📲 Send WhatsApp
                 </a>
                 {% endif %}
