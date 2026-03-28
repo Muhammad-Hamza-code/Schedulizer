@@ -110,10 +110,11 @@ def current_period_api():
                 status = "Normal"
                 absent_teacher = None
                 sub = Substitution.query.filter(
-                    Substitution.user_id == current_user.id,
-                    Substitution.date == today,
-                    Substitution.period == str(t.period_number)
-                ).first()
+                Substitution.user_id == current_user.id,
+                Substitution.date == today,
+                Substitution.period == str(t.period_number),
+                Substitution.class_name == t.class_name.strip()
+            ).first()
 
                 if sub:
                     status = "Substituted"
