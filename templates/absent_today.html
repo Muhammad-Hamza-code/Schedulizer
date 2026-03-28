@@ -49,7 +49,6 @@
         <div class="col-md-4 mb-3">
             <div class="card shadow p-3">
                 <h5>Period {{ result.period }}</h5>
-
                 <p><strong>Class:</strong> {{ result.class_name }}</p>
                 <p><strong>Absent Teacher:</strong> {{ result.absent_teacher }}</p>
                 <p><strong>Substitute Teacher:</strong> {{ result.substitute_teacher }}</p>
@@ -57,19 +56,17 @@
 
                 <!-- FIND PHONE -->
                 {% set phone = None %}
-                {% set phone = None %}
                 {% for t in teachers %}
+                {% if phone is none %}
                 {% set t_name = t.name.strip().lower().replace('sir ', '').replace('miss ', '') %}
                 {% set r_name = result.substitute_teacher.strip().lower().replace('sir ', '').replace('miss ', '') %}
-
                 {% if t_name == r_name %}
                 {% set phone = t.mobile_number %}
-                {% break %} {# stop the loop once we found the teacher #}
+                {% endif %}
                 {% endif %}
                 {% endfor %}
 
                 {% if phone %}
-
                 {% set phone_digits = phone
                 | replace('+','')
                 | replace(' ','')
@@ -91,7 +88,6 @@
                     class="btn btn-success mt-2 whatsapp-link">
                     📲 Send WhatsApp
                 </a>
-
                 {% else %}
                 <p class="text-danger">⚠️ Phone not found for {{ result.substitute_teacher }}</p>
                 {% endif %}
@@ -100,7 +96,7 @@
         </div>
         {% endfor %}
     </div>
-
+    {% endif %}
 
 </div>
 
