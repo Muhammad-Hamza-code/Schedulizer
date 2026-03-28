@@ -57,14 +57,14 @@
 
                 <!-- FIND PHONE -->
                 {% set phone = None %}
+                {% set phone = None %}
                 {% for t in teachers %}
                 {% set t_name = t.name.strip().lower().replace('sir ', '').replace('miss ', '') %}
                 {% set r_name = result.substitute_teacher.strip().lower().replace('sir ', '').replace('miss ', '') %}
 
                 {% if t_name == r_name %}
                 {% set phone = t.mobile_number %}
-                {% endif %}
-                {% set phone = t.mobile_number %}
+                {% break %} {# stop the loop once we found the teacher #}
                 {% endif %}
                 {% endfor %}
 
