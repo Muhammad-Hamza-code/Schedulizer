@@ -17,7 +17,7 @@ class Teacher(db.Model):
     is_absent = db.Column(db.Boolean, default=False, nullable=False)  # Absent flag
     daily_workload = db.Column(db.Integer, default=0, nullable=False)  # Classes assigned today
     workload_date = db.Column(db.Date, default=date.today)  # Track date of workload
-    # ...existing fields...
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class Timetable(db.Model):
     id = db.Column(db.Integer, primary_key=True)
