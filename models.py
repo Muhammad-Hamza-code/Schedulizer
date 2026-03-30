@@ -17,21 +17,6 @@ class Teacher(db.Model):
     is_absent = db.Column(db.Boolean, default=False, nullable=False)  # Absent flag
     daily_workload = db.Column(db.Integer, default=0, nullable=False)  # Classes assigned today
     workload_date = db.Column(db.Date, default=date.today)  # Track date of workload
-    timetables = db.relationship("Timetable", backref="teacher", lazy=True)
-    substitutions = db.relationship("SubstitutionRecord", foreign_keys="SubstitutionRecord.absent_teacher_id", 
-                                    backref="absent_teacher_obj", lazy=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-class Timetable(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    period_number = db.Column(db.Integer, nullable=False)
-    period_id = db.Column(db.Integer, db.ForeignKey('period.id'), nullable=False)
-    subject = db.Column(db.String(120), nullable=False)
-    day = db.Column(db.String(20), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)
-    class_name = db.Column(db.String(50), nullable=False)
-class Period(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(20), nullable=False)   # "1", "2", "Break", etc
     start_time = db.Column(db.Time, nullable=False)
     end_time = db.Column(db.Time, nullable=False)
