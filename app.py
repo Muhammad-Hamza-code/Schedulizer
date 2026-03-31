@@ -105,16 +105,24 @@ def current_period_api():
     # Current classes
     current_classes = []
     if current_period:
+        # Try to extract period number from current_period.name
+        import re
+        match = re.search(r"(\d+)$", str(current_period.name))
+        if match:
+            current_period_number = int(match.group(1))
+        else:
+            current_period_number = None
         for t in timetable:
-            if t.period_number == int(current_period.name.split()[-1]):  # match period number
+            # Match by period_number if possible, else fallback to always show if period_number is missing
+            if current_period_number is not None and t.period_number == current_period_number:
                 status = "Normal"
                 absent_teacher = None
                 sub = Substitution.query.filter(
-                Substitution.user_id == current_user.id,
-                Substitution.date == today,
-                Substitution.period == str(t.period_number),
-                Substitution.class_name == t.class_name.strip()
-            ).first()
+                    Substitution.user_id == current_user.id,
+                    Substitution.date == today,
+                    Substitution.period == str(t.period_number),
+                    Substitution.class_name == t.class_name.strip()
+                ).first()
 
                 if sub:
                     status = "Substituted"
@@ -139,6 +147,11 @@ def current_period_api():
                     "status_class": status_class,
                     "absent_teacher": absent_teacher
                 })
+        # If no classes found, log for debugging
+        if not current_classes:
+            print(f"[DEBUG] No classes found for period: {current_period.name} (number: {current_period_number}) for user {current_user.id} on {today}")
+    else:
+        print(f"[DEBUG] No current period found for user {current_user.id} on {today}")
 
     return jsonify({
         "current_period": current_period_data,
