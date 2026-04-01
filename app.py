@@ -6,7 +6,7 @@ from flask import Flask, render_template, request, redirect, url_for,flash,abort
 from flask_login import LoginManager,login_user,logout_user,login_required,current_user
 from werkzeug.security import generate_password_hash,check_password_hash
 from config import Config
-from models import Absence, Substitution, db, User, Timetable, Teacher, Period 
+from models import Absence, Substitution, SubstitutionRecord, db, User, Timetable, Teacher, Period
 import csv
 import statistics
 import os
@@ -338,8 +338,13 @@ def upload():
         # Now clear old data and upload new data
         Timetable.query.filter_by(user_id=current_user.id).delete()
         Absence.query.filter_by(user_id=current_user.id).delete()
-        Substitution.query.filter_by(user_id=current_user.id).delete()
+                # Delete in correct order to respect foreign key constraints
+        SubstitutionRecord.query.filter_by(user_id=current_user.id).delete()
+        Absence.query.filter_by(user_id=current_user.id).delete()
+        Timetable.query.filter_by(user_id=current_user.id).delete()
+        Period.query.filter_by(user_id=current_user.id).delete()
         Teacher.query.filter_by(user_id=current_user.id).delete()
+        db.session.commit()
         db.session.commit()
 
         # Re-add teachers
