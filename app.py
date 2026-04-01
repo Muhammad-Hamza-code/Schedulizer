@@ -1,3 +1,15 @@
+# --- Global error handler for user-friendly messages ---
+from flask import render_template_string
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template_string('<h2>😢 Something went wrong!</h2><p>{{ error }}</p>', error=error), 500
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template_string('<h2>404 Not Found</h2><p>{{ error }}</p>', error=error), 404
+
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 from re import sub
@@ -72,88 +84,89 @@ def register():
 @app.route('/current_period_api')
 @login_required
 def current_period_api():
-    now_dt = datetime.utcnow() + timedelta(hours=5)  # Your timezone
-    today = now_dt.date()
-    periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
-    timetable = Timetable.query.filter_by(user_id=current_user.id, day=today.strftime("%A")).all()
-    absentees = Absence.query.filter_by(user_id=current_user.id, date=today).all()
-    substitutions = Substitution.query.filter_by(user_id=current_user.id, date=today).all()
+    try:
+        now_dt = datetime.utcnow() + timedelta(hours=5)  # Your timezone
+        today = now_dt.date()
+        periods = Period.query.filter_by(user_id=current_user.id).order_by(Period.start_time).all()
+        timetable = Timetable.query.filter_by(user_id=current_user.id, day=today.strftime("%A")).all()
+        absentees = Absence.query.filter_by(user_id=current_user.id, date=today).all()
+        substitutions = Substitution.query.filter_by(user_id=current_user.id, date=today).all()
 
-    # Find current period
-    current_period = None
-    for p in periods:
-        start_dt = datetime.combine(today, p.start_time)
-        end_dt = datetime.combine(today, p.end_time)
-        if start_dt <= now_dt <= end_dt:
-            current_period = p
-            break
+        # Find current period
+        current_period = None
+        for p in periods:
+            start_dt = datetime.combine(today, p.start_time)
+            end_dt = datetime.combine(today, p.end_time)
+            if start_dt <= now_dt <= end_dt:
+                current_period = p
+                break
 
-    # Time remaining
-    if current_period:
-        period_end_dt = datetime.combine(today, current_period.end_time)
-        time_remaining_sec = int((period_end_dt - now_dt).total_seconds())
-        time_remaining = f"{time_remaining_sec // 60}m {time_remaining_sec % 60}s"
-        current_period_data = {
-            "name": current_period.name,
-            "start_time": current_period.start_time.strftime("%H:%M"),
-            "end_time": current_period.end_time.strftime("%H:%M"),
-            "time_remaining": time_remaining
-        }
-    else:
-        current_period_data = None
+        # Time remaining
+        if current_period:
+            period_end_dt = datetime.combine(today, current_period.end_time)
+            time_remaining_sec = int((period_end_dt - now_dt).total_seconds())
+            time_remaining = f"{time_remaining_sec // 60}m {time_remaining_sec % 60}s"
+            current_period_data = {
+                "name": current_period.name,
+                "start_time": current_period.start_time.strftime("%H:%M"),
+                "end_time": current_period.end_time.strftime("%H:%M"),
+                "time_remaining": time_remaining
+            }
+        else:
+            current_period_data = None
 
-    # Current classes
-    current_classes = []
-    if current_period:
-        # Try to extract period number from current_period.name
-        import re
-        current_period_id = current_period.id
-        for t in timetable:
-            # Match by period_number if possible, else fallback to always show if period_number is missing
-            if t.period_id == current_period_id:
-                status = "Normal"
-                absent_teacher = None
-                sub = Substitution.query.filter(
-                    Substitution.user_id == current_user.id,
-                    Substitution.date == today,
-                    Substitution.period == str(t.period_number),
-                    Substitution.class_name == t.class_name.strip()
-                ).first()
-
-                if sub:
-                    status = "Substituted"
-                    absent_teacher = sub.absent_teacher
-                    teacher_name = sub.substitute_teacher
-                elif any(a.teacher_id == t.teacher_id for a in absentees):
-                    status = "Absent"
-                    teacher = Teacher.query.get(t.teacher_id)
-                    teacher_name = teacher.name if teacher else "Unknown"
-                else:
+        # Current classes
+        current_classes = []
+        if current_period:
+            import re
+            current_period_id = current_period.id
+            for t in timetable:
+                if t.period_id == current_period_id:
                     status = "Normal"
-                    teacher_name = t.teacher.name
-                status_class = {
-                    "Normal": "bg-success text-white",
-                    "Absent": "bg-danger text-white",
-                    "Substituted": "bg-warning text-dark"
-                }.get(status, "bg-light")
-                current_classes.append({
-                    "class_name": t.class_name,
-                    "subject": t.subject,
-                    "teacher": teacher_name,
-                    "status": status,
-                    "status_class": status_class,
-                    "absent_teacher": absent_teacher
-                })
-        # If no classes found, log for debugging
-        if not current_classes:
-            print(f"[DEBUG] No classes found for period: {current_period.name} for user {current_user.id} on {today}")
-    else:
-        print(f"[DEBUG] No current period found for user {current_user.id} on {today}")
+                    absent_teacher = None
+                    sub = Substitution.query.filter(
+                        Substitution.user_id == current_user.id,
+                        Substitution.date == today,
+                        Substitution.period == str(t.period_number),
+                        Substitution.class_name == t.class_name.strip()
+                    ).first()
 
-    return jsonify({
-        "current_period": current_period_data,
-        "current_classes": current_classes
-    })
+                    if sub:
+                        status = "Substituted"
+                        absent_teacher = sub.absent_teacher
+                        teacher_name = sub.substitute_teacher
+                    elif any(a.teacher_id == t.teacher_id for a in absentees):
+                        status = "Absent"
+                        teacher = Teacher.query.get(t.teacher_id)
+                        teacher_name = teacher.name if teacher else "Unknown"
+                    else:
+                        status = "Normal"
+                        teacher_name = t.teacher.name
+                    status_class = {
+                        "Normal": "bg-success text-white",
+                        "Absent": "bg-danger text-white",
+                        "Substituted": "bg-warning text-dark"
+                    }.get(status, "bg-light")
+                    current_classes.append({
+                        "class_name": t.class_name,
+                        "subject": t.subject,
+                        "teacher": teacher_name,
+                        "status": status,
+                        "status_class": status_class,
+                        "absent_teacher": absent_teacher
+                    })
+            if not current_classes:
+                print(f"[DEBUG] No classes found for period: {current_period.name} for user {current_user.id} on {today}")
+        else:
+            print(f"[DEBUG] No current period found for user {current_user.id} on {today}")
+
+        return jsonify({
+            "current_period": current_period_data,
+            "current_classes": current_classes
+        })
+    except Exception as e:
+        print(f"[ERROR] {e}")
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -611,3 +624,14 @@ def undo_absent(teacher_id):
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
+
+    # --- Ensure app runs directly ---
+    if __name__ == "__main__":
+        import sys
+        port = 5000
+        if len(sys.argv) > 1:
+            try:
+                port = int(sys.argv[1])
+            except Exception:
+                pass
+        app.run(debug=True, host="0.0.0.0", port=port)
