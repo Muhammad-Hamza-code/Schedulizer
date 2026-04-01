@@ -145,7 +145,7 @@ def current_period_api():
                 })
         # If no classes found, log for debugging
         if not current_classes:
-            print(f"[DEBUG] No classes found for period: {current_period.name} (number: {current_period_number}) for user {current_user.id} on {today}")
+            print(f"[DEBUG] No classes found for period: {current_period.name} for user {current_user.id} on {today}")
     else:
         print(f"[DEBUG] No current period found for user {current_user.id} on {today}")
 
