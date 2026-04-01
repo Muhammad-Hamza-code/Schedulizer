@@ -1,14 +1,3 @@
-# --- Global error handler for user-friendly messages ---
-from flask import render_template_string
-
-@app.errorhandler(500)
-def internal_error(error):
-    db.session.rollback()
-    return render_template_string('<h2>😢 Something went wrong!</h2><p>{{ error }}</p>', error=error), 500
-
-@app.errorhandler(404)
-def not_found_error(error):
-    return render_template_string('<h2>404 Not Found</h2><p>{{ error }}</p>', error=error), 404
 
 from collections import defaultdict
 from datetime import date, datetime, timedelta
@@ -29,6 +18,18 @@ app.config.from_object(Config)
 db.init_app(app)
 with app.app_context():
     db.create_all()
+
+# --- Global error handler for user-friendly messages ---
+from flask import render_template_string
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template_string('<h2>😢 Something went wrong!</h2><p>{{ error }}</p>', error=error), 500
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template_string('<h2>404 Not Found</h2><p>{{ error }}</p>', error=error), 404
 
 @login_manager.user_loader
 def load_user(user_id):
