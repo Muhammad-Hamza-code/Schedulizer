@@ -336,8 +336,6 @@ def upload():
             timetable_rows.append((row, period))
 
         # Now clear old data and upload new data
-        Timetable.query.filter_by(user_id=current_user.id).delete()
-        Absence.query.filter_by(user_id=current_user.id).delete()
                 # Delete in correct order to respect foreign key constraints
         SubstitutionRecord.query.filter_by(user_id=current_user.id).delete()
         Absence.query.filter_by(user_id=current_user.id).delete()
