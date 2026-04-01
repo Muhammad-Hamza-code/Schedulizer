@@ -301,7 +301,7 @@ def upload():
         timetable_file.seek(0)
         timetable_reader = csv.DictReader(timetable_file.read().decode("utf-8").splitlines())
         normalized_headers_t = {h.lower().replace(" ", "_"): h for h in timetable_reader.fieldnames}
-        missing_periods = set()
+
         timetable_rows = []
         for row in timetable_reader:
             period_number_str = row[normalized_headers_t["period_number"]].strip()
@@ -311,12 +311,19 @@ def upload():
                 name=f"Period {period_number_str}"
             ).first()
             if not period:
-                missing_periods.add(period_number_str)
+                # Auto-create missing period with default times (e.g., 09:00-10:00, increment by 1 hour)
+                default_start = datetime.strptime("09:00", "%H:%M")
+                default_start = (default_start + timedelta(hours=period_number_int-1)).time()
+                default_end = (datetime.combine(datetime.today(), default_start) + timedelta(minutes=50)).time()
+                period = Period(
+                    name=f"Period {period_number_str}",
+                    start_time=default_start,
+                    end_time=default_end,
+                    user_id=current_user.id
+                )
+                db.session.add(period)
+                db.session.flush()
             timetable_rows.append((row, period))
-
-        if missing_periods:
-            flash(f"⚠️ Periods NOT found: {', '.join(sorted(missing_periods))}. Create these periods first! No data was uploaded.", "danger")
-            return redirect(url_for("upload"))
 
         # Now clear old data and upload new data
         Timetable.query.filter_by(user_id=current_user.id).delete()
