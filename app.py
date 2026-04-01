@@ -343,7 +343,6 @@ def upload():
         Period.query.filter_by(user_id=current_user.id).delete()
         Teacher.query.filter_by(user_id=current_user.id).delete()
         db.session.commit()
-        db.session.commit()
 
         # Re-add teachers
         # Re-add teachers with mobile numbers
