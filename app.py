@@ -333,10 +333,19 @@ def upload():
         db.session.commit()
 
         # Re-add teachers
-        for teacher_name, teacher_id in teacher_map.items():
+        # Re-add teachers with mobile numbers
+        teacher_file.seek(0)
+        teacher_reader = csv.DictReader(teacher_file.read().decode("utf-8").splitlines())
+        normalized_headers = {h.lower().replace(" ", "_"): h for h in teacher_reader.fieldnames}
+        for row in teacher_reader:
+            teacher_name = row.get(normalized_headers.get("teacher"), "").strip()
+            mobile_number = row.get(normalized_headers.get("mobile_number"), "").strip()
+            if not teacher_name:
+                continue
             teacher = Teacher(
-                id=teacher_id,
+                id=teacher_map[teacher_name],
                 name=teacher_name,
+                mobile_number=mobile_number,
                 user_id=current_user.id
             )
             db.session.merge(teacher)
