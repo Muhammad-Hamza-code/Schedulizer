@@ -297,7 +297,11 @@ def upload():
                 db.session.flush()
             teacher_map[teacher_name] = teacher.id
 
-        # Read timetable file and check for missing periods BEFORE clearing old data
+        # --- Customizable period auto-creation settings ---
+        # Change these to match your real school schedule:
+        AUTO_PERIOD_START = "08:00"  # First period start time (24h format)
+        AUTO_PERIOD_DURATION_MIN = 45  # Duration of each period in minutes
+
         timetable_file.seek(0)
         timetable_reader = csv.DictReader(timetable_file.read().decode("utf-8").splitlines())
         normalized_headers_t = {h.lower().replace(" ", "_"): h for h in timetable_reader.fieldnames}
@@ -311,10 +315,10 @@ def upload():
                 name=f"Period {period_number_str}"
             ).first()
             if not period:
-                # Auto-create missing period with default times (e.g., 09:00-10:00, increment by 1 hour)
-                default_start = datetime.strptime("09:00", "%H:%M")
-                default_start = (default_start + timedelta(hours=period_number_int-1)).time()
-                default_end = (datetime.combine(datetime.today(), default_start) + timedelta(minutes=50)).time()
+                # Auto-create missing period with custom start time and duration
+                base_start = datetime.strptime(AUTO_PERIOD_START, "%H:%M")
+                default_start = (base_start + timedelta(minutes=(period_number_int-1)*AUTO_PERIOD_DURATION_MIN)).time()
+                default_end = (datetime.combine(datetime.today(), default_start) + timedelta(minutes=AUTO_PERIOD_DURATION_MIN)).time()
                 period = Period(
                     name=f"Period {period_number_str}",
                     start_time=default_start,
