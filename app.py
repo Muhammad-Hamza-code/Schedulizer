@@ -274,8 +274,14 @@ def upload():
 
         # Read teacher file first
         # Delete old data for this user before re-importing
+        # Delete dependent tables FIRST
+        Absence.query.filter_by(user_id=current_user.id).delete()
+        Substitution.query.filter_by(user_id=current_user.id).delete()
         Timetable.query.filter_by(user_id=current_user.id).delete()
+
+        # THEN delete teachers
         Teacher.query.filter_by(user_id=current_user.id).delete()
+
         db.session.commit()
 
         # Read teacher file first
@@ -336,11 +342,6 @@ def upload():
             timetable_rows.append((row, period))
 
         # Now clear old data and upload new data
-        Timetable.query.filter_by(user_id=current_user.id).delete()
-        Absence.query.filter_by(user_id=current_user.id).delete()
-        Substitution.query.filter_by(user_id=current_user.id).delete()
-        Teacher.query.filter_by(user_id=current_user.id).delete()
-        db.session.commit()
 
         # Re-add teachers
         # Re-add teachers with mobile numbers
