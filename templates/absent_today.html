@@ -40,9 +40,6 @@
     <h3 class="mt-4">📊 Substitution Results</h3>
 
     <!-- Send All Button -->
-    <button onclick="sendAllWhatsApp()" class="btn btn-primary mb-3">
-        📢 Send All WhatsApp Messages
-    </button>
 
     <div class="row mt-3">
         {% for result in results %}
@@ -107,20 +104,6 @@
         return true;
     }
 
-    function sendAllWhatsApp() {
-        const links = document.querySelectorAll(".whatsapp-link");
-
-        if (links.length === 0) {
-            alert("No WhatsApp messages available!");
-            return;
-        }
-
-        links.forEach((link, index) => {
-            setTimeout(() => {
-                window.open(link.href, "_blank");
-            }, index * 800);
-        });
-    }
 </script>
 
 {% endblock %}
