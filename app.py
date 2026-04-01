@@ -244,15 +244,7 @@ def validate_csv(file, expected_columns):
 @app.route("/upload", methods=["GET", "POST"])
 @login_required
 def upload():
-    # Clear old data before uploading new CSV
-    Timetable.query.filter_by(user_id=current_user.id).delete()
-    Absence.query.filter_by(user_id=current_user.id).delete()
-    Substitution.query.filter_by(user_id=current_user.id).delete()
-    Teacher.query.filter_by(user_id=current_user.id).delete()
-
-
     if request.method == "POST":
-
         teacher_file_format = ["Teacher", "Mobile Number"]
         timetable_format = ["Period Number", "Teacher", "Subject", "Day","Class Name"]
 
@@ -266,26 +258,21 @@ def upload():
         if not validate_csv(timetable_file, timetable_format) or not validate_csv(teacher_file, teacher_file_format):
             flash("File format is incorrect", "danger")
             return redirect(url_for("upload"))
+
+        # Read teacher file first
         teacher_file.seek(0)
         teacher_reader = csv.DictReader(teacher_file.read().decode("utf-8").splitlines())
-
         teacher_map = {}
-
-                # 1️⃣ Normalize headers (case-insensitive + spaces → underscores)
         normalized_headers = {h.lower().replace(" ", "_"): h for h in teacher_reader.fieldnames}
-
         for row in teacher_reader:
             teacher_name = row.get(normalized_headers.get("teacher"), "").strip()
             mobile_number = row.get(normalized_headers.get("mobile_number"), "").strip()
-
             if not teacher_name:
-                continue  # skip rows with no teacher name
-
+                continue
             teacher = Teacher.query.filter_by(
                 name=teacher_name,
                 user_id=current_user.id
             ).first()
-
             if not teacher:
                 teacher = Teacher(
                     name=teacher_name,
@@ -294,45 +281,63 @@ def upload():
                 )
                 db.session.add(teacher)
                 db.session.flush()
-
             teacher_map[teacher_name] = teacher.id
 
+        # Read timetable file and check for missing periods BEFORE clearing old data
         timetable_file.seek(0)
         timetable_reader = csv.DictReader(timetable_file.read().decode("utf-8").splitlines())
         normalized_headers_t = {h.lower().replace(" ", "_"): h for h in timetable_reader.fieldnames}
-        missing_periods = []
-        
+        missing_periods = set()
+        timetable_rows = []
         for row in timetable_reader:
             period_number_str = row[normalized_headers_t["period_number"]].strip()
             period_number_int = int(period_number_str)
-
-            # find the Period object in DB
             period = Period.query.filter_by(
                 user_id=current_user.id,
-                name= f"Period {period_number_str}"  # match your Period.name with CSV Period Number
+                name=f"Period {period_number_str}"
             ).first()
-
             if not period:
-                missing_periods.append(period_number_str)
-                continue  # skip this row if Period not found
+                missing_periods.add(period_number_str)
+            timetable_rows.append((row, period))
 
+        if missing_periods:
+            flash(f"⚠️ Periods NOT found: {', '.join(sorted(missing_periods))}. Create these periods first! No data was uploaded.", "danger")
+            return redirect(url_for("upload"))
+
+        # Now clear old data and upload new data
+        Timetable.query.filter_by(user_id=current_user.id).delete()
+        Absence.query.filter_by(user_id=current_user.id).delete()
+        Substitution.query.filter_by(user_id=current_user.id).delete()
+        Teacher.query.filter_by(user_id=current_user.id).delete()
+        db.session.commit()
+
+        # Re-add teachers
+        for teacher_name, teacher_id in teacher_map.items():
+            teacher = Teacher(
+                id=teacher_id,
+                name=teacher_name,
+                user_id=current_user.id
+            )
+            db.session.merge(teacher)
+        db.session.commit()
+
+        # Add timetable rows
+        for row, period in timetable_rows:
+            period_number_str = row[normalized_headers_t["period_number"]].strip()
+            period_number_int = int(period_number_str)
             t = Timetable(
                 user_id=current_user.id,
                 teacher_id=teacher_map[row[normalized_headers_t["teacher"]]],
                 subject=row[normalized_headers_t["subject"]],
                 day=row[normalized_headers_t["day"]],
                 period_number=period_number_int,
-                period_id=period.id,  # ⚡ assign the foreign key here
+                period_id=period.id,
                 class_name=row[normalized_headers_t["class_name"]]
             )
             db.session.add(t)
-
         db.session.commit()
 
-        if missing_periods:
-            flash(f"⚠️ Periods NOT found: {', '.join(missing_periods)}. Create these periods first!", "danger")
-        else:
-            flash("Timetable Added successfully ✅", "success")
+        flash("Timetable Added successfully ✅", "success")
         return redirect(url_for("dashboard"))
     return render_template("upload.html")
 @app.route("/periods", methods=["GET", "POST"])
