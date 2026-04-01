@@ -28,6 +28,7 @@ class Timetable(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     teacher_id = db.Column(db.Integer, db.ForeignKey('teacher.id'), nullable=False)
     class_name = db.Column(db.String(50), nullable=False)
+    teacher = db.relationship("Teacher")
 
 class Period(db.Model):
     id = db.Column(db.Integer, primary_key=True)
