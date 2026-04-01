@@ -340,8 +340,13 @@ def upload():
         SubstitutionRecord.query.filter_by(user_id=current_user.id).delete()
         Absence.query.filter_by(user_id=current_user.id).delete()
         Timetable.query.filter_by(user_id=current_user.id).delete()
-        Period.query.filter_by(user_id=current_user.id).delete()
-        Teacher.query.filter_by(user_id=current_user.id).delete()
+        from sqlalchemy import text
+        db.session.execute(text("DELETE FROM substitution_record WHERE user_id = :uid"), {"uid": current_user.id})
+        db.session.execute(text("DELETE FROM substitution WHERE user_id = :uid"), {"uid": current_user.id})
+        db.session.execute(text("DELETE FROM absence WHERE user_id = :uid"), {"uid": current_user.id})
+        db.session.execute(text("DELETE FROM timetable WHERE user_id = :uid"), {"uid": current_user.id})
+        db.session.execute(text("DELETE FROM period WHERE user_id = :uid"), {"uid": current_user.id})
+        db.session.execute(text("DELETE FROM teacher WHERE user_id = :uid"), {"uid": current_user.id})
         db.session.commit()
 
         # Re-add teachers
