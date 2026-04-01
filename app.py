@@ -107,14 +107,10 @@ def current_period_api():
     if current_period:
         # Try to extract period number from current_period.name
         import re
-        match = re.search(r"(\d+)$", str(current_period.name))
-        if match:
-            current_period_number = int(match.group(1))
-        else:
-            current_period_number = None
+        current_period_id = current_period.id
         for t in timetable:
             # Match by period_number if possible, else fallback to always show if period_number is missing
-            if current_period_number is not None and t.period_number == current_period_number:
+            if t.period_id == current_period_id:
                 status = "Normal"
                 absent_teacher = None
                 sub = Substitution.query.filter(
@@ -162,14 +158,16 @@ def current_period_api():
 def dashboard():
     # Total counts
     total_teachers = Teacher.query.filter_by(user_id=current_user.id).count()
-    today = datetime.utcnow().date() + timedelta(hours=5)
+    now_dt = datetime.utcnow() + timedelta(hours=5)
+    today = now_dt.date()
     total_classes = Timetable.query.filter_by(user_id=current_user.id).distinct(Timetable.class_name).count()
     absentees_count = Absence.query.filter_by(user_id=current_user.id, date=today).count()
     substitutions_count = Substitution.query.filter_by(user_id=current_user.id, date=today).count()
 
    # 1️⃣ Gather teacher workloads
     # 1️⃣ Get today's info
-    today = datetime.utcnow().date() + timedelta(hours=5)
+    now_dt = datetime.utcnow() + timedelta(hours=5)
+    today = now_dt.date()
     day_name = today.strftime("%A")
 
     # Get absent teachers
