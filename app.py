@@ -126,7 +126,8 @@ def current_period_api():
                     teacher_name = sub.substitute_teacher
                 elif any(a.teacher_id == t.teacher_id for a in absentees):
                     status = "Absent"
-                    teacher_name = t.teacher.name
+                    teacher = Teacher.query.get(t.teacher_id)
+                    teacher_name = teacher.name if teacher else "Unknown"
                 else:
                     status = "Normal"
                     teacher_name = t.teacher.name
