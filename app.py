@@ -648,7 +648,19 @@ def undo_absent(teacher_id):
         flash("Absence removed ✅", "success")
 
     return redirect(url_for("teachers_page"))
+def clean_old_data():
+    today = date.today()
 
+    # Delete old absences
+    Absence.query.filter(Absence.date < today).delete()
+
+    # Delete old substitutions
+    Substitution.query.filter(Substitution.date < today).delete()
+
+    db.session.commit()
+@app.before_request
+def before_every_request():
+    clean_old_data()
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port)
