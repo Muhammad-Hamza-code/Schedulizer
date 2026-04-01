@@ -119,10 +119,9 @@ def current_period_api():
         # Current classes
         current_classes = []
         if current_period:
-            import re
             current_period_id = current_period.id
             for t in timetable:
-                if t.period_id == current_period_id:
+                if t.period_id == current_period_id or t.period_number == int(current_period.name.replace("Period ", "").strip()):
                     status = "Normal"
                     absent_teacher = None
                     sub = Substitution.query.filter(
@@ -274,13 +273,20 @@ def upload():
             return redirect(url_for("upload"))
 
         # Read teacher file first
+        # Delete old data for this user before re-importing
+        Timetable.query.filter_by(user_id=current_user.id).delete()
+        Teacher.query.filter_by(user_id=current_user.id).delete()
+        db.session.commit()
+
+        # Read teacher file first
         teacher_file.seek(0)
-        teacher_reader = csv.DictReader(teacher_file.read().decode("utf-8").splitlines())
+        teacher_reader = csv.DictReader(teacher_file.read().decode("utf-8-sig").splitlines())
         teacher_map = {}
-        normalized_headers = {h.lower().replace(" ", "_"): h for h in teacher_reader.fieldnames}
         for row in teacher_reader:
-            teacher_name = row.get(normalized_headers.get("teacher"), "").strip()
-            mobile_number = row.get(normalized_headers.get("mobile_number"), "").strip()
+            # Normalize all keys in each row to handle spaces/BOM/case
+            normalized_row = {k.strip().lower().replace(" ", "_"): v for k, v in row.items()}
+            teacher_name = normalized_row.get("teacher", "").strip()
+            mobile_number = normalized_row.get("mobile_number", "").strip()
             if not teacher_name:
                 continue
             teacher = Teacher.query.filter_by(
