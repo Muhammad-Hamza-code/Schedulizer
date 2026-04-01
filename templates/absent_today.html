@@ -76,6 +76,8 @@
                 {% set message =
                 "Hello " ~ result.substitute_teacher ~ ",%0A%0A" ~
                 "You have been assigned a substitution class.%0A%0A" ~
+                "📅 Date: " ~ result.date.strftime('%d %b %Y') ~ "%0A" ~
+                "📆 Day: " ~ result.day ~ "%0A%0A" ~
                 "📘 Class: " ~ result.class_name ~ "%0A" ~
                 "⏰ Period: " ~ result.period ~ "%0A" ~
                 "👤 Absent Teacher: " ~ result.absent_teacher ~ "%0A%0A" ~
